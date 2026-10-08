@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Teste Vocacional UNIVERSO</title>
+<meta name="description" content="Descubra sua vocação com base científica — resultado personalizado e gratuito.">
+<meta property="og:title" content="Teste Vocacional UNIVERSO Goiânia">
+<meta property="og:description" content="Teste vocacional científico — descubra sua vocação e os cursos ideais para você!">
+<meta property="og:image" content="https://luciakratz-arch.github.io/UNIVERSOvocacional/og-image.png">
+<meta property="og:url" content="https://luciakratz-arch.github.io/UNIVERSOvocacional/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ──────────────────────────────────── */
+:root {
+  --bd: #1B3A6B; --bm: #2E6DB4; --bl: #4A90D9;
+  --red: #C0392B; --red2: #E74C3C;
+  --bg: #EEF3FB; --sur: #FFFFFF; --sur2: #E8F0FB;
+  --bor: #C8D8EF; --txt: #1A2A40; --ts: #4A6080; --tf: #8AA0B8;
+  --inp: #FFFFFF;
+  --a1:#E67E22; --b1:#FFF4E8;
+  --a2:#27AE60; --b2:#EDFAF3;
+  --a3:#8E44AD; --b3:#F5EDFB;
+  --a4:#2980B9; --b4:#EDF4FB;
+  --a5:#D4AC0D; --b5:#FEFCE8;
+  --ff1:'Montserrat',sans-serif; --ff2:'Inter',sans-serif;
+  --sh1:0 2px 8px rgba(27,58,107,.08);
+  --sh2:0 4px 20px rgba(27,58,107,.14);
+  --sh3:0 8px 36px rgba(27,58,107,.2);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C1720; --sur:#13233A; --sur2:#192E47; --bor:#243D5C;
+  --txt:#E4EEF8; --ts:#7AA0C0; --tf:#4A6A8A; --inp:#192E47;
+  --b1:#2A1A08; --b2:#082318; --b3:#1A0828; --b4:#08182A; --b5:#231F08;
+}}
+:root[data-theme="dark"]{
+  --bg:#0C1720; --sur:#13233A; --sur2:#192E47; --bor:#243D5C;
+  --txt:#E4EEF8; --ts:#7AA0C0; --tf:#4A6A8A; --inp:#192E47;
+  --b1:#2A1A08; --b2:#082318; --b3:#1A0828; --b4:#08182A; --b5:#231F08;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;-webkit-text-size-adjust:100%}
+body{min-height:100%;background:var(--bg);color:var(--txt);font-family:var(--ff2);font-size:15px;line-height:1.6;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);-webkit-tap-highlight-color:transparent}
+button{cursor:pointer;font-family:var(--ff2)}
+input,select,textarea{font-family:var(--ff2);font-size:16px}
+
+.hdr{background:linear-gradient(135deg,var(--bd),var(--bm));padding:13px 18px 15px;display:flex;align-items:center;gap:12px;border-bottom:3px solid var(--red);position:sticky;top:env(safe-area-inset-top,0);z-index:200;box-shadow:var(--sh2)}
+.hdr-name{font-family:var(--ff1);font-weight:900;font-size:20px;color:#fff;letter-spacing:1px}
+.hdr-sub{font-size:9px;color:rgba(255,255,255,.6);letter-spacing:.5px;font-weight:600}
+.hdr-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:4px 11px;border-radius:20px;white-space:nowrap}
+
+.prog-wrap{background:var(--sur);padding:9px 18px;border-bottom:1px solid var(--bor);position:sticky;top:calc(env(safe-area-inset-top,0px) + 63px);z-index:199}
+.prog-bg{height:6px;background:var(--bor);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--bm));border-radius:3px;transition:width .4s ease}
+.prog-lbl{font-size:11px;color:var(--tf);text-align:right;margin-top:3px;font-weight:600}
+
+.main{max-width:700px;margin:0 auto;padding:22px 16px 56px}
+
+.step{display:none}
+.step.on{display:block;animation:fi .3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.hero{background:linear-gradient(135deg,var(--bd),var(--bm));border-radius:22px;padding:28px 22px;text-align:center;color:#fff;margin-bottom:18px;box-shadow:var(--sh3)}
+.hero .icon{font-size:52px;margin-bottom:10px}
+.hero h1{font-family:var(--ff1);font-size:22px;font-weight:900;margin-bottom:8px;text-wrap:balance}
+.hero p{font-size:14px;color:rgba(255,255,255,.82);line-height:1.55}
+
+.sc{background:var(--sur);border:1px solid var(--bor);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:var(--sh1)}
+.sc-ttl{font-family:var(--ff1);font-size:13px;font-weight:700;color:var(--bm);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+
+.fg{margin-bottom:14px}
+.lbl{display:block;font-size:12px;font-weight:600;color:var(--ts);margin-bottom:5px;letter-spacing:.2px}
+.inp,.sel{width:100%;padding:11px 13px;border:1.5px solid var(--bor);border-radius:12px;background:var(--inp);color:var(--txt);font-size:16px;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}
+.inp:focus,.sel:focus{border-color:var(--bm);box-shadow:0 0 0 3px rgba(46,109,180,.14)}
+.sel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%234A6080' fill='none' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px}
+
+.lgpd-box{background:var(--sur2);border:1px solid var(--bor);border-radius:12px;padding:13px 15px;font-size:12px;color:var(--ts);line-height:1.6;margin-bottom:12px}
+.lgpd-box h4{font-size:12px;font-weight:700;color:var(--txt);margin-bottom:3px}
+.lgpd-ck{display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.lgpd-ck input{width:18px;height:18px;flex-shrink:0;accent-color:var(--bm);margin-top:2px}
+.lgpd-ck span{font-size:13px;color:var(--ts);line-height:1.5}
+
+.btn-row{display:flex;gap:10px;margin-top:20px}
+.btn{flex:1;min-height:52px;padding:13px 18px;border:none;border-radius:12px;font-family:var(--ff1);font-weight:700;font-size:15px;letter-spacing:.3px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn:active{transform:scale(.97)}
+.btn-pri{background:linear-gradient(135deg,var(--bd),var(--bm));color:#fff;box-shadow:var(--sh2)}
+.btn-pri:hover{box-shadow:var(--sh3)}
+.btn-sec{background:var(--sur);color:var(--ts);border:1.5px solid var(--bor)}
+.btn-ghost{background:transparent;color:var(--bm);font-size:14px;min-height:44px;flex:none;padding:10px 14px}
+.btn-cta{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;box-shadow:0 4px 16px rgba(192,57,43,.35)}
+.btn-wa{background:#25D366;color:#fff;box-shadow:0 4px 16px rgba(37,211,102,.28);font-size:14px}
+
+.dim-ttl{font-family:var(--ff1);font-weight:800;font-size:15px;color:var(--bd);margin:18px 0 4px;display:flex;align-items:center;gap:8px}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .dim-ttl{color:var(--bl)}}
+:root[data-theme="dark"] .dim-ttl{color:var(--bl)}
+.dim-sub{font-size:12px;color:var(--tf);margin-bottom:14px;font-style:italic}
+
+.lk-item{background:var(--sur);border:1px solid var(--bor);border-radius:14px;padding:15px 16px;margin-bottom:12px;box-shadow:var(--sh1)}
+.lk-txt{font-size:14px;font-weight:600;color:var(--txt);margin-bottom:12px;line-height:1.5}
+.lk-scale{display:flex;gap:6px;justify-content:space-between}
+.lk-scale label{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.lk-scale input[type=radio]{display:none}
+.lk-btn{width:100%;min-width:36px;height:44px;border-radius:10px;border:2px solid var(--bor);background:var(--sur2);display:flex;align-items:center;justify-content:center;font-family:var(--ff1);font-weight:800;font-size:16px;color:var(--ts);transition:all .2s}
+.lk-scale input:checked+.lk-btn{background:var(--bm);border-color:var(--bm);color:#fff;box-shadow:0 2px 8px rgba(46,109,180,.35)}
+.lk-scale label:hover .lk-btn{border-color:var(--bm);color:var(--bm)}
+.lk-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--tf);padding:0 2px;margin-top:4px}
+.lk-labels span{max-width:60px;text-align:center;line-height:1.2}
+
+.loading{text-align:center;padding:40px 20px}
+.spin{width:48px;height:48px;border:4px solid var(--bor);border-top-color:var(--bm);border-radius:50%;animation:sp .85s linear infinite;margin:0 auto 16px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.loading h3{font-family:var(--ff1);font-size:18px;color:var(--bd);margin-bottom:6px}
+.loading p{font-size:14px;color:var(--ts)}
+.stream-box{background:var(--sur);border:1px solid var(--bor);border-radius:12px;padding:14px;margin-top:18px;font-size:13px;color:var(--ts);line-height:1.7;min-height:80px;max-height:180px;overflow-y:auto;text-align:left;white-space:pre-wrap}
+
+/* ── LAUDO ───────────────────────────────────── */
+.laudo-hdr{background:linear-gradient(135deg,var(--bd),var(--bm));border-radius:22px;padding:24px 20px;color:#fff;text-align:center;margin-bottom:18px;box-shadow:var(--sh3)}
+.laudo-hdr .l-sub{font-size:12px;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
+.laudo-hdr h2{font-family:var(--ff1);font-size:21px;font-weight:900;margin-bottom:10px}
+.laudo-tag{display:inline-block;background:var(--red);padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+
+.scores-wrap{background:var(--sur);border:1px solid var(--bor);border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:var(--sh1)}
+.scores-ttl{font-family:var(--ff1);font-size:14px;font-weight:800;color:var(--bd);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .scores-ttl{color:var(--bl)}}
+:root[data-theme="dark"] .scores-ttl{color:var(--bl)}
+.score-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.score-bar-lbl{font-size:12px;font-weight:700;color:var(--ts);width:110px;flex-shrink:0;text-align:right}
+.score-bar-bg{flex:1;height:10px;background:var(--sur2);border-radius:5px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:5px;transition:width 1s ease}
+.score-pct{font-size:12px;font-weight:800;width:36px;flex-shrink:0;text-align:right}
+
+.analise-box{background:var(--sur);border:1px solid var(--bor);border-left:4px solid var(--bm);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:var(--sh1)}
+.analise-ttl{font-family:var(--ff1);font-size:14px;font-weight:800;color:var(--bd);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .analise-ttl{color:var(--bl)}}
+:root[data-theme="dark"] .analise-ttl{color:var(--bl)}
+.analise-txt{font-size:14px;color:var(--ts);line-height:1.7}
+
+/* ── ÁREA VOCACIONAL CARD ────────────────────── */
+.area-voc-ttl{font-family:var(--ff1);font-size:16px;font-weight:800;color:var(--txt);margin:22px 0 6px;display:flex;align-items:center;gap:8px}
+.area-voc-sub{font-size:13px;color:var(--tf);margin-bottom:16px}
+
+.avc{border-radius:20px;padding:20px 18px;margin-bottom:14px;box-shadow:var(--sh2);position:relative;overflow:hidden;display:flex;gap:16px;align-items:flex-start}
+.avc::before{content:'';position:absolute;top:0;left:0;bottom:0;width:6px;border-radius:20px 0 0 20px}
+.avc-icon{font-size:36px;flex-shrink:0;line-height:1}
+.avc-body{flex:1;min-width:0}
+.avc-rank{position:absolute;top:12px;right:14px;font-family:var(--ff1);font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;color:#fff}
+.avc-title{font-family:var(--ff1);font-size:17px;font-weight:900;margin-bottom:3px;padding-right:48px;line-height:1.2}
+.avc-match{display:flex;align-items:center;gap:8px;margin:8px 0 10px;background:rgba(255,255,255,.55);border-radius:8px;padding:7px 10px}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .avc-match{background:rgba(0,0,0,.25)}}
+:root[data-theme="dark"] .avc-match{background:rgba(0,0,0,.25)}
+.avc-match-lbl{font-size:10px;font-weight:700;color:var(--ts);white-space:nowrap}
+.avc-match-bg{flex:1;height:8px;background:rgba(0,0,0,.1);border-radius:4px;overflow:hidden}
+.avc-match-fill{height:100%;border-radius:4px}
+.avc-match-pct{font-family:var(--ff1);font-size:13px;font-weight:900;white-space:nowrap}
+.avc-desc{font-size:13px;color:var(--ts);line-height:1.55;margin-bottom:10px}
+.avc-tags{display:flex;flex-wrap:wrap;gap:5px}
+.avc-tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1.5px solid}
+
+/* ── CURSOS UNIVERSO SECTION ─────────────────── */
+.univ-section{background:linear-gradient(135deg,#1B3A6B,#2E6DB4);border-radius:22px;padding:22px 20px;margin:26px 0 18px;color:#fff;box-shadow:var(--sh3)}
+.univ-section h3{font-family:var(--ff1);font-size:17px;font-weight:900;margin-bottom:4px}
+.univ-section p{font-size:13px;color:rgba(255,255,255,.75);margin-bottom:0}
+.univ-divider{display:flex;align-items:center;gap:10px;margin:4px 0 18px}
+.univ-divider span{height:2px;flex:1;background:rgba(255,255,255,.25);border-radius:1px}
+.univ-divider em{font-size:11px;color:rgba(255,255,255,.6);font-style:normal;white-space:nowrap}
+
+/* ── COURSE CARDS ────────────────────────────── */
+.courses-ttl{font-family:var(--ff1);font-size:15px;font-weight:800;color:var(--txt);margin:0 0 14px;display:flex;align-items:center;gap:8px}
+
+.cc{border-radius:22px;padding:22px 20px;margin-bottom:18px;box-shadow:var(--sh2);position:relative;overflow:hidden}
+.cc::before{content:'';position:absolute;top:0;left:0;bottom:0;width:7px}
+.cc-1{background:var(--b1)} .cc-1::before{background:var(--a1)}
+.cc-2{background:var(--b2)} .cc-2::before{background:var(--a2)}
+.cc-3{background:var(--b3)} .cc-3::before{background:var(--a3)}
+.cc-adm{background:linear-gradient(135deg,#FFF0F0,#FFE2E2)} .cc-adm::before{background:var(--red)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .cc-adm{background:linear-gradient(135deg,#2A0808,#3A1010)}}
+:root[data-theme="dark"] .cc-adm{background:linear-gradient(135deg,#2A0808,#3A1010)}
+
+.cc-rank{position:absolute;top:14px;right:16px;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--ff1);font-size:16px;font-weight:900;color:#fff}
+.cc-1 .cc-rank{background:var(--a1)} .cc-2 .cc-rank{background:var(--a2)} .cc-3 .cc-rank{background:var(--a3)} .cc-adm .cc-rank{background:var(--red)}
+
+.adm-star{display:inline-flex;align-items:center;gap:4px;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:8px;letter-spacing:.3px}
+
+.cc-title{font-family:var(--ff1);font-size:20px;font-weight:900;padding-right:48px;line-height:1.2;margin-bottom:3px}
+.cc-1 .cc-title{color:#7A3A00} .cc-2 .cc-title{color:#0A4D24} .cc-3 .cc-title{color:#4D1580} .cc-adm .cc-title{color:#6B0F0F}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .cc-1 .cc-title{color:var(--a1)}
+  :root:not([data-theme="light"]) .cc-2 .cc-title{color:var(--a2)}
+  :root:not([data-theme="light"]) .cc-3 .cc-title{color:var(--a3)}
+  :root:not([data-theme="light"]) .cc-adm .cc-title{color:#E74C3C}
+}
+:root[data-theme="dark"] .cc-1 .cc-title{color:var(--a1)}
+:root[data-theme="dark"] .cc-2 .cc-title{color:var(--a2)}
+:root[data-theme="dark"] .cc-3 .cc-title{color:var(--a3)}
+:root[data-theme="dark"] .cc-adm .cc-title{color:#E74C3C}
+
+.cc-area{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;opacity:.7;margin-bottom:10px}
+.cc-1 .cc-area{color:var(--a1)} .cc-2 .cc-area{color:var(--a2)} .cc-3 .cc-area{color:var(--a3)} .cc-adm .cc-area{color:var(--red)}
+
+.match-wrap{display:flex;align-items:center;gap:10px;margin-bottom:14px;background:rgba(255,255,255,.55);border-radius:10px;padding:9px 12px}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .match-wrap{background:rgba(0,0,0,.25)}}
+:root[data-theme="dark"] .match-wrap{background:rgba(0,0,0,.25)}
+.match-lbl{font-size:11px;font-weight:700;color:var(--ts);white-space:nowrap}
+.match-bar-bg{flex:1;height:9px;background:rgba(0,0,0,.1);border-radius:4px;overflow:hidden}
+.match-bar-fill{height:100%;border-radius:4px}
+.cc-1 .match-bar-fill{background:var(--a1)} .cc-2 .match-bar-fill{background:var(--a2)} .cc-3 .match-bar-fill{background:var(--a3)} .cc-adm .match-bar-fill{background:var(--red)}
+.match-pct{font-family:var(--ff1);font-size:14px;font-weight:900;white-space:nowrap}
+.cc-1 .match-pct{color:var(--a1)} .cc-2 .match-pct{color:var(--a2)} .cc-3 .match-pct{color:var(--a3)} .cc-adm .match-pct{color:var(--red)}
+
+.cc-match-txt{font-size:13px;font-style:italic;color:var(--ts);margin-bottom:14px;line-height:1.55}
+.cc-sec-lbl{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:7px;margin-top:14px}
+.cc-1 .cc-sec-lbl{color:var(--a1)} .cc-2 .cc-sec-lbl{color:var(--a2)} .cc-3 .cc-sec-lbl{color:var(--a3)} .cc-adm .cc-sec-lbl{color:var(--red)}
+
+.pros-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+.pros-list li{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--txt);line-height:1.45}
+.blt{width:19px;height:19px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;margin-top:1px}
+.cc-1 .blt{background:var(--a1)} .cc-2 .blt{background:var(--a2)} .cc-3 .blt{background:var(--a3)} .cc-adm .blt{background:var(--red)}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chip{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;border:1.5px solid}
+.cc-1 .chip{border-color:var(--a1);color:var(--a1);background:rgba(230,126,34,.07)}
+.cc-2 .chip{border-color:var(--a2);color:var(--a2);background:rgba(39,174,96,.07)}
+.cc-3 .chip{border-color:var(--a3);color:var(--a3);background:rgba(142,68,173,.07)}
+.cc-adm .chip{border-color:var(--red);color:var(--red);background:rgba(192,57,43,.07)}
+
+.share-sec{background:linear-gradient(135deg,var(--bd),var(--bm));border-radius:22px;padding:22px 20px;margin-top:22px;text-align:center;color:#fff;box-shadow:var(--sh3)}
+.share-sec h3{font-family:var(--ff1);font-size:16px;font-weight:800;margin-bottom:5px}
+.share-sec p{font-size:13px;color:rgba(255,255,255,.75);margin-bottom:16px}
+.share-btns{display:flex;flex-direction:column;gap:10px}
+
+@media(max-width:440px){
+  .lk-scale{gap:4px}
+  .lk-btn{height:40px;font-size:15px;border-radius:8px}
+  .score-bar-lbl{width:90px;font-size:11px}
+  .avc{flex-direction:column;gap:8px}
+}
+@media print{
+  .hdr,.prog-wrap,.share-sec,.btn-row,button{display:none!important}
+  body{background:#fff!important;color:#000!important;padding:0!important}
+  .main{max-width:100%;padding:10px!important}
+  .step{display:block!important}
+  .step:not(#s8){display:none!important}
+  .hero{background:#1B3A6B!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;border-radius:8px}
+  .score-bar-fill{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .area-card,.curso-card{break-inside:avoid;border:1px solid #ccc!important}
+  .analise-box{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <div class="hdr-name">UNIVERSO</div>
+    <div class="hdr-sub">CENTRO UNIVERSITÁRIO • GOIÂNIA</div>
+  </div>
+  <div class="hdr-badge">🎓 Teste Vocacional</div>
+</header>
+
+<div class="prog-wrap" id="progWrap">
+  <div class="prog-bg"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  <div class="prog-lbl" id="progLbl">Etapa 1 de 7</div>
+</div>
+
+<main class="main">
+
+<!-- ETAPA 1 — BOAS-VINDAS -->
+<div class="step on" id="s1">
+  <div class="hero">
+    <div class="icon">🎯</div>
+    <h1>Descubra sua vocação</h1>
+    <p>Teste científico e gratuito — você descobre sua área vocacional real e, dentro dela, os cursos que a UNIVERSO Goiânia oferece para você.</p>
+  </div>
+
+  <div class="sc">
+    <div class="sc-ttl">📐 Como funciona</div>
+    <div style="display:flex;flex-direction:column;gap:11px;">
+      <div style="display:flex;align-items:center;gap:12px;font-size:14px;"><span style="font-size:22px;">🔬</span><span><strong>Base científica:</strong> Holland RIASEC · Big Five · Âncoras de Schein</span></div>
+      <div style="display:flex;align-items:center;gap:12px;font-size:14px;"><span style="font-size:22px;">📊</span><span><strong>Escalas 1 a 5</strong> em vários itens por dimensão para um resultado mais preciso</span></div>
+      <div style="display:flex;align-items:center;gap:12px;font-size:14px;"><span style="font-size:22px;">🗺️</span><span><strong>Resultado em dois níveis:</strong> sua grande área vocacional <em>e</em> os cursos ideais para você</span></div>
+      <div style="display:flex;align-items:center;gap:12px;font-size:14px;"><span style="font-size:22px;">🎓</span><span>Mostra os <strong>cursos da UNIVERSO</strong> que mais combinam com o seu perfil</span></div>
+      <div style="display:flex;align-items:center;gap:12px;font-size:14px;"><span style="font-size:22px;">⏱️</span><span>Dura cerca de <strong>8 a 10 minutos</strong> — responda com calma e honestidade</span></div>
+    </div>
+  </div>
+
+  <div class="btn-row"><button class="btn btn-cta" onclick="go(2)">Começar o Teste →</button></div>
+</div>
+
+<!-- ETAPA 2 — IDENTIFICAÇÃO -->
+<div class="step" id="s2">
+  <p style="font-family:var(--ff1);font-weight:800;font-size:17px;color:var(--bd);margin-bottom:14px">👤 Seus dados</p>
+  <div class="sc">
+    <div class="sc-ttl">📋 Identificação</div>
+    <div class="fg"><label class="lbl">Nome completo *</label><input class="inp" id="nome" type="text" placeholder="Seu nome completo"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="fg"><label class="lbl">Idade *</label><input class="inp" id="idade" type="number" placeholder="Ex: 17" min="14" max="35"></div>
+      <div class="fg"><label class="lbl">Série *</label><select class="sel" id="serie"><option value="">Selecione</option><option>1º Ano EM</option><option>2º Ano EM</option><option>3º Ano EM</option><option>Já concluí o EM</option></select></div>
+    </div>
+    <div class="fg"><label class="lbl">Escola / Cidade</label><input class="inp" id="escola" type="text" placeholder="Nome da escola ou cidade"></div>
+    <div class="fg"><label class="lbl">WhatsApp *</label><input class="inp" id="zap" type="tel" placeholder="(62) 9 xxxx-xxxx"></div>
+  </div>
+  <div class="lgpd-box">
+    <h4>🔒 Privacidade e LGPD</h4>
+    <p>Seus dados são usados exclusivamente para gerar seu laudo vocacional. Não serão compartilhados com terceiros. Armazenamento seguro conforme Lei nº 13.709/2018.</p>
+  </div>
+  <label class="lgpd-ck" style="margin-bottom:16px"><input type="checkbox" id="lgpd"><span>Autorizo o uso dos meus dados para fins do Teste Vocacional da UNIVERSO Goiânia.</span></label>
+  <div class="btn-row">
+    <button class="btn btn-ghost" onclick="go(1)">← Voltar</button>
+    <button class="btn btn-pri" onclick="valStep2()">Próximo →</button>
+  </div>
+</div>
+
+<!-- ETAPA 3 — HOLLAND RIASEC (R, I, A) -->
+<div class="step" id="s3">
+  <div class="dim-ttl">🔍 Dimensão 1 — Interesses e Preferências</div>
+  <div class="dim-sub">Avalie quanto cada afirmação combina com você de 1 (nada) a 5 (muito). Não existe resposta certa ou errada.</div>
+  <div class="sc-ttl" style="margin-top:4px;color:var(--a1)">🛠️ Atividades Práticas e Técnicas</div>
+  <div id="lk-R"></div>
+  <div class="sc-ttl" style="margin-top:10px;color:var(--bm)">🔬 Investigação e Ciência</div>
+  <div id="lk-I"></div>
+  <div class="sc-ttl" style="margin-top:10px;color:var(--a3)">🎨 Expressão Criativa</div>
+  <div id="lk-A"></div>
+  <div class="btn-row">
+    <button class="btn btn-ghost" onclick="go(2)">← Voltar</button>
+    <button class="btn btn-pri" onclick="go(4)">Próximo →</button>
+  </div>
+</div>
+
+<!-- ETAPA 4 — HOLLAND (S, E, C) -->
+<div class="step" id="s4">
+  <div class="dim-ttl">🔍 Dimensão 1 — continuação</div>
+  <div class="dim-sub">Continue avaliando de 1 (nada) a 5 (muito).</div>
+  <div class="sc-ttl" style="margin-top:4px;color:var(--a2)">🤝 Relações Sociais e Cuidado</div>
+  <div id="lk-S"></div>
+  <div class="sc-ttl" style="margin-top:10px;color:var(--red)">🚀 Liderança e Empreendedorismo</div>
+  <div id="lk-E"></div>
+  <div class="sc-ttl" style="margin-top:10px;color:var(--bd)">📋 Organização e Processos</div>
+  <div id="lk-C"></div>
+  <div class="btn-row">
+    <button class="btn btn-ghost" onclick="go(3)">← Voltar</button>
+    <button class="btn btn-pri" onclick="go(5)">Próximo →</button>
+  </div>
+</div>
+
+<!-- ETAPA 5 — PERSONALIDADE (Big Five) -->
+<div class="step" id="s5">
+  <div class="dim-ttl">🧠 Dimensão 2 — Personalidade (Big Five)</div>
+  <div class="dim-sub">Como você se vê no dia a dia? Avalie de 1 (discordo totalmente) a 5 (concordo totalmente).</div>
+  <div class="sc-ttl" style="margin-top:4px;color:var(--bm)">🌟 Abertura e Criatividade</div>
+  <div id="lk-O"></div>
+  <div class="sc-ttl" style="margin-top:10px;color:var(--a2)">📌 Organização e Disciplina</div>
+  <div id="lk-CO"></div>
+  <div class="sc-ttl" style="margin-top:10px;color:var(--a1)">💬 Extroversão e Sociabilidade</div>
+  <div id="lk-EX"></div>
+  <div class="btn-row">
+    <button class="btn btn-ghost" onclick="go(4)">← Voltar</button>
+    <button class="btn btn-pri" onclick="go(6)">Próximo →</button>
+  </div>
+</div>
+
+<!-- ETAPA 6 — VALORES / ÂNCORAS + APTIDÕES -->
+<div class="step" id="s6">
+  <div class="dim-ttl">⚓ Dimensão 3 — Valores e Âncoras de Carreira</div>
+  <div class="dim-sub">O que é mais importante para você na vida profissional? Avalie de 1 (pouco importante) a 5 (muito importante).</div>
+  <div id="lk-V"></div>
+  <div class="dim-ttl" style="margin-top:18px">🧩 Dimensão 4 — Aptidões e Contexto</div>
+  <div class="dim-sub">Avalie sua facilidade e contexto de 1 (nada/pouco) a 5 (muito).</div>
+  <div id="lk-AP"></div>
+  <div class="sc" style="margin-top:4px">
+    <div class="sc-ttl">✏️ Algo mais que queira nos contar?</div>
+    <textarea class="inp" id="extras" rows="3" placeholder="Ex: sempre me interessei por saúde mas também gosto de gestão…" style="resize:vertical;min-height:72px;font-size:15px"></textarea>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-ghost" onclick="go(5)">← Voltar</button>
+    <button class="btn btn-cta" onclick="gerarLaudo()">🎯 Gerar meu Laudo!</button>
+  </div>
+</div>
+
+<!-- ETAPA 7 — LAUDO -->
+<div class="step" id="s7"></div>
+
+</main>
+
+<!-- FIREBASE REST -->
+<script>
+window._save = async (data) => {
+  try {
+    const pid = 'anamnese-dralucia', key = 'AIzaSyBaJDEuOub7IBDVQMakk2rmyG6e8xRhP2E';
+    const url = `https://firestore.googleapis.com/v1/projects/${pid}/databases/(default)/documents/universo-vocacional?key=${key}`;
+    const tv = v => {
+      if(v===null||v===undefined) return {nullValue:null};
+      if(typeof v==='boolean') return {booleanValue:v};
+      if(typeof v==='number') return {doubleValue:v};
+      if(Array.isArray(v)) return {arrayValue:{values:v.map(tv)}};
+      if(typeof v==='object'){const f={};Object.entries(v).forEach(([k,x])=>f[k]=tv(x));return {mapValue:{fields:f}}}
+      return {stringValue:String(v)};
+    };
+    const fields={};
+    const doc={origem:'universo-vocacional',projeto:'Teste Vocacional UNIVERSO',instituicao:'Centro Universitário UNIVERSO Goiânia',curso_coordenacao:'Administração',...data};
+    Object.entries(doc).forEach(([k,v])=>fields[k]=tv(v));
+    await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields})});
+  } catch(e){console.warn('FS',e)}
+};
+</script>
+
+<script>
+/* ══════════════════════════════════════════════
+   BANCO DE QUESTÕES — Escala Likert 1–5
+══════════════════════════════════════════════ */
+const QUES = {
+  R: [
+    "Gosto de montar, consertar ou construir coisas com as próprias mãos",
+    "Prefiro atividades ao ar livre, com animais, plantas ou natureza",
+    "Me interesso por mecânica, eletrônica ou funcionamento de máquinas",
+    "Tenho facilidade para atividades físicas e trabalho manual"
+  ],
+  I: [
+    "Gosto de pesquisar, investigar e descobrir como as coisas funcionam",
+    "Me atrai resolver problemas complexos usando raciocínio lógico",
+    "Tenho interesse por biologia, química, física ou ciências da saúde",
+    "Leio sobre ciência, tecnologia ou temas acadêmicos por prazer"
+  ],
+  A: [
+    "Gosto de atividades criativas: desenho, música, escrita ou moda",
+    "Me expresso melhor pela criatividade do que por regras e rotinas",
+    "Valorizo a estética, o design e a originalidade nas coisas",
+    "Me sinto bem em ambientes onde posso criar livremente"
+  ],
+  S: [
+    "Gosto de ajudar, orientar e cuidar das pessoas ao redor",
+    "Me sinto realizado quando faço diferença na vida de alguém",
+    "Tenho facilidade para ouvir, acolher e resolver conflitos",
+    "Prefiro trabalhar com pessoas do que com máquinas ou dados"
+  ],
+  E: [
+    "Gosto de liderar, influenciar e convencer as pessoas",
+    "Me atraem negócios, vendas, empreendedorismo e gestão",
+    "Tenho facilidade em tomar decisões e assumir responsabilidades",
+    "Imagino com frequência novos projetos ou negócios que poderia criar"
+  ],
+  C: [
+    "Gosto de organizar, planejar e seguir processos estruturados",
+    "Me interesso por finanças, contabilidade ou análise de dados",
+    "Tenho facilidade para lidar com tabelas, planilhas e registros",
+    "Valorizo precisão, ordem e clareza nos trabalhos que realizo"
+  ],
+  O: [
+    "Sou curioso e adoro aprender coisas novas e diferentes",
+    "Tenho mente aberta para ideias incomuns ou pouco convencionais",
+    "Gosto de imaginar, criar e explorar possibilidades"
+  ],
+  CO: [
+    "Sou organizado, cumpro prazos e me preparo antes de agir",
+    "Tenho disciplina e persisto nos meus objetivos mesmo quando é difícil",
+    "Prefiro ter tudo planejado a improvisar na hora"
+  ],
+  EX: [
+    "Me sinto energizado em grupos e atividades sociais",
+    "Tenho facilidade para iniciar conversas e fazer novos amigos",
+    "Gosto de ser o centro das atenções em situações sociais"
+  ],
+  V: [
+    "Quero ter autonomia e liberdade no meu trabalho, do meu jeito",
+    "Quero ter segurança financeira e estabilidade profissional",
+    "Quero criar novos negócios, produtos ou soluções inovadoras",
+    "Quero ajudar pessoas e gerar impacto social com meu trabalho",
+    "Quero ser especialista reconhecido numa área técnica específica",
+    "Quero liderar equipes e ser responsável por grandes resultados",
+    "Quero viver um estilo de vida equilibrado entre trabalho e vida pessoal"
+  ],
+  AP: [
+    "Tenho facilidade com matemática, cálculos e raciocínio lógico",
+    "Tenho facilidade com leitura, escrita e argumentação",
+    "Tenho facilidade para me expressar oralmente e me comunicar",
+    "Estou disposto(a) a estudar por 5 anos ou mais para seguir a carreira ideal",
+    "Prefiro uma carreira que permita trabalho autônomo ou empreendimento"
+  ]
+};
+
+const ST = { scores:{}, nome:'', idade:'', serie:'', escola:'', zap:'', extras:'' };
+
+function renderLikert(containerId, dim, items) {
+  const wrap = document.getElementById(containerId);
+  if (!wrap) return;
+  if (!ST.scores[dim]) ST.scores[dim] = {};
+  wrap.innerHTML = items.map((txt, i) => `
+    <div class="lk-item">
+      <div class="lk-txt">${txt}</div>
+      <div class="lk-scale">
+        ${[1,2,3,4,5].map(v=>`
+          <label>
+            <input type="radio" name="${dim}_${i}" value="${v}" onchange="ST.scores['${dim}'][${i}]=${v}">
+            <div class="lk-btn">${v}</div>
+          </label>`).join('')}
+      </div>
+      <div class="lk-labels"><span>Nada a ver</span><span>Muito a ver</span></div>
+    </div>`).join('');
+}
+
+(function(){
+  renderLikert('lk-R','R',QUES.R);
+  renderLikert('lk-I','I',QUES.I);
+  renderLikert('lk-A','A',QUES.A);
+  renderLikert('lk-S','S',QUES.S);
+  renderLikert('lk-E','E',QUES.E);
+  renderLikert('lk-C','C',QUES.C);
+  renderLikert('lk-O','O',QUES.O);
+  renderLikert('lk-CO','CO',QUES.CO);
+  renderLikert('lk-EX','EX',QUES.EX);
+  renderLikert('lk-V','V',QUES.V);
+  renderLikert('lk-AP','AP',QUES.AP);
+})();
+
+let curStep = 1;
+const TOTAL = 7;
+function go(n){
+  document.getElementById('s'+curStep)?.classList.remove('on');
+  curStep = n;
+  const el = document.getElementById('s'+n);
+  if(el){el.classList.add('on');window.scrollTo({top:0,behavior:'smooth'});}
+  updateProg();
+}
+function updateProg(){
+  const pct = Math.round(((curStep-1)/(TOTAL-1))*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progLbl').textContent = 'Etapa '+curStep+' de '+TOTAL;
+}
+updateProg();
+
+function valStep2(){
+  const n=document.getElementById('nome').value.trim();
+  const a=document.getElementById('idade').value;
+  const s=document.getElementById('serie').value;
+  const l=document.getElementById('lgpd').checked;
+  if(!n){alert('Por favor, informe seu nome.');return}
+  if(!a||a<14||a>35){alert('Informe uma idade válida.');return}
+  if(!s){alert('Selecione sua série.');return}
+  if(!l){alert('Autorize o uso dos dados para continuar.');return}
+  const z=document.getElementById('zap').value.trim();
+  if(!z){alert('Por favor, informe seu WhatsApp.');return}
+  ST.nome=n; ST.idade=Number(a); ST.serie=s;
+  ST.escola=document.getElementById('escola').value.trim();
+  ST.zap=z;
+  go(3);
+}
+
+/* ══════════════════════════════════════════════
+   SCORING ENGINE
+══════════════════════════════════════════════ */
+function dim(key){
+  const s = ST.scores[key] || {};
+  const vals = Object.values(s).filter(v=>v>0);
+  if(!vals.length) return 0;
+  return vals.reduce((a,b)=>a+b,0)/vals.length;
+}
+
+const HC = {R:'#E67E22',I:'#2980B9',A:'#8E44AD',S:'#27AE60',E:'#C0392B',C:'#1B3A6B'};
+
+/* ── GRANDES ÁREAS VOCACIONAIS (amplas, universais) ── */
+// Cada área tem pesos Holland+BigFive+Âncora que definem o fit
+const AREAS_VOCACIONAIS = [
+  {
+    id:'saude_biologica', nome:'Ciências da Saúde e Biológicas', icon:'🩺',
+    color:'#27AE60', bg:'#EDFAF3', darkBg:'#082318', textColor:'#0A4D24',
+    desc:'Profissões voltadas ao cuidado, diagnóstico, pesquisa biomédica e saúde humana ou animal. Combina ciência, empatia e impacto direto na vida das pessoas.',
+    exemplos:['Medicina','Enfermagem','Fisioterapia','Farmácia','Biomedicina','Odontologia','Medicina Veterinária','Nutrição','Psicologia','Fonoaudiologia','Terapia Ocupacional'],
+    pesos:{R:3,I:5,A:1,S:4,E:2,C:3,O:3,CO:4,EX:3,V_imp:5,V_tec:4,AP_logi:3,AP_long:4}
+  },
+  {
+    id:'negocios_gestao', nome:'Negócios, Gestão e Empreendedorismo', icon:'📊',
+    color:'#C0392B', bg:'#FFF0F0', darkBg:'#2A0808', textColor:'#6B0F0F',
+    desc:'Área de liderança, tomada de decisão, criação de empresas e gestão de pessoas e recursos. Combina visão estratégica, comunicação e capacidade empreendedora.',
+    exemplos:['Administração','Economia','Gestão Comercial','Marketing','Recursos Humanos','Logística','Comércio Exterior','Empreendedorismo'],
+    pesos:{R:1,I:2,A:2,S:3,E:5,C:4,O:3,CO:4,EX:4,V_emp:5,V_ldr:5,V_aut:3,AP_verb:3,AP_oral:4}
+  },
+  {
+    id:'engenharia_tecnologia', nome:'Engenharia e Tecnologia', icon:'⚙️',
+    color:'#2980B9', bg:'#EDF4FB', darkBg:'#08182A', textColor:'#0A2A4D',
+    desc:'Resolução de problemas complexos com ciência e método. Projeta, constrói e otimiza sistemas, estruturas, processos e soluções tecnológicas.',
+    exemplos:['Eng. Civil','Eng. de Produção','Eng. Elétrica','Eng. Mecânica','Eng. de Software','Ciência da Computação','Sistemas de Informação','Eng. Ambiental'],
+    pesos:{R:4,I:5,A:1,S:1,E:3,C:5,O:3,CO:5,EX:2,V_tec:5,V_seg:3,AP_logi:5,AP_long:4}
+  },
+  {
+    id:'ciencias_exatas', nome:'Ciências Exatas e Matemáticas', icon:'🔢',
+    color:'#8E44AD', bg:'#F5EDFB', darkBg:'#1A0828', textColor:'#4D1580',
+    desc:'Abstração, lógica e análise quantitativa. Atua em pesquisa, finanças, estatística, atuária, física, química e inteligência artificial.',
+    exemplos:['Matemática','Física','Química','Estatística','Ciências Atuariais','Análise de Dados','Inteligência Artificial'],
+    pesos:{R:2,I:5,A:1,S:1,E:2,C:5,O:4,CO:5,EX:1,V_tec:5,V_seg:3,AP_logi:5}
+  },
+  {
+    id:'comunicacao_artes', nome:'Comunicação, Artes e Cultura', icon:'🎨',
+    color:'#E67E22', bg:'#FFF4E8', darkBg:'#2A1A08', textColor:'#7A3A00',
+    desc:'Expressão criativa, narrativa visual ou escrita, produção cultural, design e mídias. Para quem cria, comunica e inspira pessoas.',
+    exemplos:['Jornalismo','Publicidade e Propaganda','Design Gráfico','Design de Moda','Artes Visuais','Cinema','Música','Relações Públicas','Fotografia','Produção Cultural'],
+    pesos:{R:1,I:2,A:5,S:3,E:4,C:1,O:5,CO:2,EX:4,V_aut:4,V_emp:3,AP_verb:4,AP_oral:4}
+  },
+  {
+    id:'educacao_humanas', nome:'Educação e Ciências Humanas', icon:'🍎',
+    color:'#27AE60', bg:'#EDFAF3', darkBg:'#082318', textColor:'#0A4D24',
+    desc:'Formação de pessoas, pesquisa sobre sociedade, ensino, psicologia educacional e intervenção social. Trabalho com impacto na vida de comunidades.',
+    exemplos:['Pedagogia','Letras','História','Geografia','Filosofia','Sociologia','Psicologia','Serviço Social','Ed. Física (Licenciatura)'],
+    pesos:{R:1,I:3,A:3,S:5,E:2,C:3,O:4,CO:3,EX:4,V_imp:5,V_seg:4,AP_verb:4,AP_oral:4}
+  },
+  {
+    id:'direito_juridico', nome:'Direito e Ciências Jurídicas', icon:'⚖️',
+    color:'#D4AC0D', bg:'#FEFCE8', darkBg:'#231F08', textColor:'#4D3A00',
+    desc:'Interpretação das leis, defesa de direitos, resolução de conflitos e construção de justiça. Exige argumentação, leitura e raciocínio crítico aguçado.',
+    exemplos:['Direito','Relações Internacionais','Ciências Políticas','Criminologia','Segurança Pública'],
+    pesos:{R:1,I:4,A:2,S:4,E:4,C:4,O:3,CO:4,EX:4,V_ldr:4,V_imp:4,AP_verb:5,AP_oral:5,AP_long:4}
+  },
+  {
+    id:'agro_ambiental', nome:'Agronegócio e Ciências Ambientais', icon:'🌿',
+    color:'#27AE60', bg:'#EDFAF3', darkBg:'#082318', textColor:'#0A4D24',
+    desc:'Brasil é potência agrícola mundial. Atua em produção alimentar, manejo ambiental, veterinária rural, tecnologia agrícola e sustentabilidade.',
+    exemplos:['Agronomia','Medicina Veterinária','Engenharia Ambiental','Biologia','Gestão Ambiental','Ciência e Tecnologia de Alimentos','Zootecnia'],
+    pesos:{R:5,I:4,A:1,S:2,E:3,C:3,O:4,CO:4,EX:2,V_tec:4,V_estilo:3,AP_logi:4,AP_long:3}
+  },
+  {
+    id:'financas_contabeis', nome:'Finanças, Contabilidade e Economia', icon:'💰',
+    color:'#1B3A6B', bg:'#EEF3FB', darkBg:'#0C1720', textColor:'#1B3A6B',
+    desc:'Gestão de recursos financeiros, análise econômica, auditoria e controle. Alta empregabilidade e remuneração. Para quem ama números e ordem.',
+    exemplos:['Ciências Contábeis','Economia','Finanças','Atuária','Gestão Financeira','Controladoria','Auditoria'],
+    pesos:{R:1,I:3,A:1,S:2,E:3,C:5,O:2,CO:5,EX:2,V_seg:5,V_tec:4,AP_logi:5}
+  },
+  {
+    id:'saude_bem_estar', nome:'Saúde, Bem-Estar e Esporte', icon:'🏃',
+    color:'#E67E22', bg:'#FFF4E8', darkBg:'#2A1A08', textColor:'#7A3A00',
+    desc:'Qualidade de vida, performance física, reabilitação e nutrição. Trabalho dinâmico com foco no corpo e no bem-estar das pessoas.',
+    exemplos:['Ed. Física','Fisioterapia','Nutrição','Biomedicina','Personal Training','Terapia Ocupacional','Esportes de Alto Rendimento'],
+    pesos:{R:5,I:3,A:2,S:4,E:3,C:2,O:3,CO:3,EX:5,V_estilo:5,V_imp:3,AP_oral:3}
+  }
+];
+
+/* ── CURSOS DA UNIVERSO ────────────────────────── */
+const COURSE_PROFILE = {
+  administracao:  {R:1,I:2,A:1,S:3,E:5,C:4,O:2,CO:4,EX:4,V_emp:5,V_ldr:5,V_aut:3,AP_logi:2,AP_verb:3,AP_oral:4,isAdm:true},
+  biomedicina:    {R:3,I:5,A:1,S:3,E:2,C:3,O:4,CO:4,EX:2,V_tec:5,V_imp:3,AP_logi:4,AP_long:5},
+  contabeis:      {R:1,I:3,A:1,S:2,E:3,C:5,O:2,CO:5,EX:2,V_seg:5,V_tec:4,AP_logi:5},
+  jornalismo:     {R:1,I:2,A:4,S:3,E:3,C:2,O:5,CO:2,EX:5,V_aut:4,V_imp:3,AP_verb:5,AP_oral:5},
+  publicidade:    {R:1,I:2,A:5,S:2,E:4,C:2,O:5,CO:2,EX:5,V_emp:4,V_aut:4,AP_verb:4,AP_oral:5},
+  design_moda:    {R:3,I:1,A:5,S:1,E:3,C:2,O:5,CO:2,EX:3,V_aut:4,V_emp:3,AP_verb:2},
+  direito:        {R:1,I:4,A:2,S:4,E:4,C:3,O:3,CO:4,EX:4,V_ldr:4,V_imp:4,AP_verb:5,AP_oral:5,AP_long:4},
+  ed_fisica_bach: {R:5,I:2,A:2,S:4,E:3,C:2,O:3,CO:3,EX:5,V_estilo:5,V_imp:3,AP_oral:3},
+  ed_fisica_lic:  {R:4,I:2,A:2,S:5,E:2,C:2,O:3,CO:3,EX:4,V_imp:4,V_estilo:4,AP_oral:3},
+  enfermagem:     {R:4,I:3,A:1,S:5,E:2,C:3,O:3,CO:4,EX:3,V_imp:5,V_seg:4,AP_long:3},
+  agronomia:      {R:5,I:4,A:1,S:2,E:3,C:3,O:4,CO:4,EX:2,V_tec:4,V_estilo:3,AP_logi:4,AP_long:4},
+  eng_civil:      {R:5,I:4,A:2,S:1,E:3,C:4,O:3,CO:5,EX:2,V_tec:4,V_seg:3,AP_logi:5,AP_long:4},
+  eng_producao:   {R:4,I:4,A:1,S:2,E:4,C:5,O:3,CO:5,EX:3,V_tec:4,V_ldr:4,AP_logi:5,AP_long:4},
+  farmacia:       {R:3,I:5,A:1,S:3,E:2,C:4,O:4,CO:4,EX:2,V_tec:5,V_seg:4,AP_logi:4,AP_long:4},
+  fisioterapia:   {R:4,I:3,A:1,S:5,E:2,C:3,O:3,CO:3,EX:3,V_imp:5,V_estilo:4,AP_long:3},
+  medicina:       {R:3,I:5,A:1,S:4,E:3,C:3,O:4,CO:5,EX:3,V_tec:5,V_imp:4,AP_logi:4,AP_long:5},
+  medicina_vet:   {R:5,I:4,A:1,S:4,E:2,C:3,O:4,CO:4,EX:2,V_tec:4,V_imp:3,AP_long:4},
+  nutricao:       {R:2,I:3,A:2,S:4,E:3,C:3,O:4,CO:3,EX:3,V_imp:4,V_estilo:4,AP_long:3},
+  odontologia:    {R:4,I:3,A:3,S:4,E:3,C:3,O:3,CO:4,EX:3,V_tec:4,V_seg:4,AP_logi:3,AP_long:4},
+  pedagogia:      {R:1,I:2,A:3,S:5,E:2,C:3,O:4,CO:3,EX:4,V_imp:5,V_seg:4,AP_verb:3,AP_oral:4},
+  formacao_ped:   {R:1,I:2,A:2,S:5,E:2,C:3,O:3,CO:3,EX:3,V_seg:5,V_imp:4,AP_verb:3},
+  psicologia:     {R:1,I:4,A:2,S:5,E:2,C:2,O:4,CO:3,EX:3,V_imp:5,V_aut:3,AP_verb:4,AP_oral:3,AP_long:3},
+};
+
+const ANCHOR_MAP = {0:'aut',1:'seg',2:'emp',3:'imp',4:'tec',5:'ldr',6:'estilo'};
+const AP_MAP = {0:'logi',1:'verb',2:'oral',3:'long',4:'aut'};
+
+const CURSOS = {
+  administracao:  {nome:'Administração',area:'Negócios e Gestão',icon:'📊',pros:['Forma líderes e gestores para qualquer setor da economia','Altíssima empregabilidade e mercado amplíssimo','Base ideal para empreendedorismo e startups','Abre portas para MBA, consultorias e concursos públicos','Flexibilidade: RH, finanças, marketing, operações'],carreiras:['Gestor','Empreendedor','Consultor','Analista de Negócios','Líder de RH'],isAdm:true},
+  biomedicina:    {nome:'Biomedicina',area:'Saúde e Ciências',icon:'🧬',pros:['Diagnósticos, pesquisa e tecnologia da saúde','Expansão em biotecnologia e laboratórios','Base para pesquisa científica de ponta','Atua em hospitais, indústria farmacêutica e forense','Combina saúde, ciência e tecnologia'],carreiras:['Biomédico','Analista de Lab.','Pesquisador','Bioinformático','Perito']},
+  contabeis:      {nome:'Ciências Contábeis',area:'Finanças e Negócios',icon:'🧾',pros:['Alta empregabilidade garantida por lei','Progressão clara: contador → auditor → CFO','Concursos públicos com ótima remuneração','Renda desde o início da carreira'],carreiras:['Contador','Auditor','Analista Fiscal','Controller','Perito Contábil']},
+  jornalismo:     {nome:'Jornalismo',area:'Comunicação e Mídia',icon:'📰',pros:['Formação para jornalistas digitais e criadores de conteúdo','Mídia digital em expansão acelerada','Habilidade de narrativa aplicável em RP e marketing'],carreiras:['Jornalista','Repórter','Editor','Creator','Relações Públicas']},
+  publicidade:    {nome:'Publicidade e Propaganda',area:'Comunicação e Criatividade',icon:'📣',pros:['Alta demanda por marketing digital','Trabalho criativo com campanhas e marcas','Une criatividade, negócios e tecnologia'],carreiras:['Publicitário','Social Media','Dir. de Criação','Gest. de Tráfego','Copywriter']},
+  design_moda:    {nome:'Design de Moda',area:'Criatividade e Estilo',icon:'👗',pros:['Setor de moda é gigante no Brasil','Une estética, criatividade e empreendedorismo','Moda sustentável em crescimento'],carreiras:['Estilista','Designer','Stylist','Consultora de Imagem','Empreendedora de Moda']},
+  direito:        {nome:'Direito',area:'Jurídico e Social',icon:'⚖️',pros:['Curso mais tradicional e respeitado do Brasil','Advocacia, magistratura, concursos','Alto prestígio e potencial de ganho elevado'],carreiras:['Advogado','Promotor','Juiz','Delegado','Consultor Jurídico']},
+  ed_fisica_bach: {nome:'Educação Física (Bacharelado)',area:'Saúde e Performance',icon:'🏋️',pros:['Academias, clubes, reabilitação e esporte de alto rendimento','Wellness e bem-estar em expansão','Empreender com academia ou personal training'],carreiras:['Personal Trainer','Prep. Físico','Coord. Esportivo','Treinador','Gestor de Academia']},
+  ed_fisica_lic:  {nome:'Ed. Física (Licenciatura)',area:'Educação e Esporte',icon:'🏃',pros:['Formação para professor na educação básica','Estabilidade em escola pública e privada','Impacto na vida de crianças e jovens'],carreiras:['Professor','Coach Escolar','Técnico Esportivo','Coord. Pedagógico','Gest. de Proj. Sociais']},
+  enfermagem:     {nome:'Enfermagem',area:'Saúde e Cuidado',icon:'🏥',pros:['Profissão essencial com alta demanda','Trabalho significativo salvando vidas','Hospitais, UBS, UTI, home care e estética'],carreiras:['Enfermeiro','Especialista UTI','Home Care','Enf. Estética','Coord. de Saúde']},
+  agronomia:      {nome:'Engenharia Agronômica',area:'Agronegócio e Ciências',icon:'🌾',pros:['Brasil é potência agrícola — mercado imenso','Alta remuneração no agronegócio','Tecnologia, meio ambiente e produção de alimentos'],carreiras:['Agrônomo','Consultor Agrícola','Perito Rural','Gest. Agroindustrial','Pesquisador']},
+  eng_civil:      {nome:'Engenharia Civil',area:'Construção e Infraestrutura',icon:'🏗️',pros:['Alta empregabilidade e remuneração acima da média','Projeta obras que ficam para a história','Possibilidade de empresa própria de engenharia'],carreiras:['Engenheiro Civil','Projetista','Calculista','Gest. de Obras','Empreend. Imobiliário']},
+  eng_producao:   {nome:'Engenharia de Produção',area:'Processos e Gestão',icon:'⚙️',pros:['Une gestão e tecnologia para otimizar empresas','Alta empregabilidade em indústria, tech e consultorias','Porta de entrada para cargos de gerência'],carreiras:['Eng. de Produção','Gest. de Qualidade','Analista de Processos','Consultor Lean','Gerente Industrial']},
+  farmacia:       {nome:'Farmácia',area:'Saúde e Ciências',icon:'💊',pros:['Mercado farmacêutico em expansão','Farmácias, hospitais, indústrias e laboratórios','Pesquisa e desenvolvimento de medicamentos'],carreiras:['Farmacêutico','Farmacologista','Gest. de Farmácia','Analista de P&D','Consultor de Saúde']},
+  fisioterapia:   {nome:'Fisioterapia',area:'Saúde e Reabilitação',icon:'🦾',pros:['Crescimento com envelhecimento da população','Ortopedia, neurologia, esportiva e mais','Clínica própria desde cedo'],carreiras:['Fisioterapeuta','Esp. Reabilitação','Fisio Esportiva','Home Care','Gest. de Clínica']},
+  medicina:       {nome:'Medicina',area:'Saúde e Ciências da Vida',icon:'🩺',pros:['Maior prestígio e remuneração na saúde','Salva vidas com impacto humano incomparável','Telemedicina e tecnologia médica em expansão'],carreiras:['Médico','Cirurgião','Clínico Geral','Especialista','Pesquisador Clínico']},
+  medicina_vet:   {nome:'Medicina Veterinária',area:'Saúde Animal e Agronegócio',icon:'🐾',pros:['Mercado pet em explosão no Brasil','Pets, pecuária, zoonoses e saúde pública','Alta satisfação por paixão pelos animais'],carreiras:['Médico Veterinário','Esp. em Pets','Fiscal Agropecuário','Pesquisador','Gest. de Fazenda']},
+  nutricao:       {nome:'Nutrição',area:'Saúde e Alimentação',icon:'🥗',pros:['Expansão com crescimento da consciência de saúde','Clínicas, hospitais, esportes, indústria e escola','Combina saúde, ciência e qualidade de vida'],carreiras:['Nutricionista','Consult. Esportiva','Nutri Clínica','Alimentação Escolar','Digital Health']},
+  odontologia:    {nome:'Odontologia',area:'Saúde Bucal',icon:'🦷',pros:['Alta remuneração potencial com especialização','Consultório próprio desde cedo','Estética odontológica em explosão'],carreiras:['Cirurgião-Dentista','Implantodontista','Ortodontista','Dentista Estético','Gest. de Clínica']},
+  pedagogia:      {nome:'Pedagogia',area:'Educação e Desenvolvimento',icon:'🍎',pros:['Estabilidade com concursos públicos','Escolas, empresas (T&D) e educação especial','Impacto transformador na vida das famílias'],carreiras:['Pedagogo','Coord. Pedagógico','Gest. de T&D','Educador Social','Esp. em Ed. Infantil']},
+  formacao_ped:   {nome:'Formação Pedagógica',area:'Educação Continuada',icon:'📋',pros:['Para quem já tem graduação e quer ser docente','Acesso rápido à carreira de professor','Valorizado pelo MEC'],carreiras:['Professor','Instrutor Técnico','Docente Superior','Educador Corporativo','Coord. de Cursos']},
+  psicologia:     {nome:'Psicologia',area:'Saúde Mental e Comportamento',icon:'🧠',pros:['Demanda crescente com saúde mental em foco','Clínicas, hospitais, escolas, empresas e esportes','Impacto profundo no bem-estar das pessoas'],carreiras:['Psicólogo Clínico','Neuropsicólogo','Psicólogo Org.','Psicoterapeuta','Coach Psicológico']},
+};
+
+/* ── CALCULAR SCORES ─────────────────────────── */
+function calcularTudo(){
+  const H = {R:dim('R'),I:dim('I'),A:dim('A'),S:dim('S'),E:dim('E'),C:dim('C')};
+  const BF = {O:dim('O'),CO:dim('CO'),EX:dim('EX')};
+  const Anch = {};
+  const vs = ST.scores['V'] || {};
+  Object.entries(ANCHOR_MAP).forEach(([i,k]) => Anch[k] = vs[Number(i)]||0);
+  const Apt = {};
+  const aps = ST.scores['AP'] || {};
+  Object.entries(AP_MAP).forEach(([i,k]) => Apt[k] = aps[Number(i)]||0);
+
+  // Score por ÁREA VOCACIONAL ampla
+  const areaScores = {};
+  AREAS_VOCACIONAIS.forEach(area => {
+    let total = 0, maxT = 0;
+    const p = area.pesos;
+    ['R','I','A','S','E','C'].forEach(d=>{const w=p[d]||0;total+=H[d]*w;maxT+=5*w});
+    ['O','CO','EX'].forEach(d=>{const w=p[d]||0;total+=BF[d]*w;maxT+=5*w});
+    ['aut','seg','emp','imp','tec','ldr','estilo'].forEach(k=>{const w=p['V_'+k]||0;total+=(Anch[k]||0)*w;maxT+=5*w});
+    ['logi','verb','oral','long','aut'].forEach(k=>{const w=p['AP_'+k]||0;total+=(Apt[k]||0)*w;maxT+=5*w});
+    areaScores[area.id] = maxT>0 ? total/maxT*100 : 0;
+  });
+  const areaSorted = AREAS_VOCACIONAIS
+    .map(a=>({...a, score:areaScores[a.id]}))
+    .sort((a,b)=>b.score-a.score);
+
+  // Score por CURSO DA UNIVERSO
+  const cursoScores = {};
+  Object.entries(COURSE_PROFILE).forEach(([cid,p]) => {
+    let total=0,maxT=0;
+    ['R','I','A','S','E','C'].forEach(d=>{const w=p[d]||0;total+=H[d]*w;maxT+=5*w});
+    ['O','CO','EX'].forEach(d=>{const w=p[d]||0;total+=BF[d]*w;maxT+=5*w});
+    ['aut','seg','emp','imp','tec','ldr','estilo'].forEach(k=>{const w=p['V_'+k]||0;total+=(Anch[k]||0)*w;maxT+=5*w});
+    ['logi','verb','oral','long','aut'].forEach(k=>{const w=p['AP_'+k]||0;total+=(Apt[k]||0)*w;maxT+=5*w});
+    const raw = maxT>0 ? total/maxT*100 : 0;
+    cursoScores[cid] = p.isAdm ? Math.min(100,raw*1.10) : raw;
+  });
+  const cursoSorted = Object.entries(cursoScores).sort((a,b)=>b[1]-a[1]);
+
+  return {H, BF, Anch, areaSorted, cursoSorted};
+}
+
+/* ══════════════════════════════════════════════
+   GERAR LAUDO
+══════════════════════════════════════════════ */
+async function gerarLaudo(){
+  ST.extras = document.getElementById('extras').value.trim();
+  const {H, BF, Anch, areaSorted, cursoSorted} = calcularTudo();
+
+  const top3Areas = areaSorted.slice(0,3);
+  const maxAreaScore = top3Areas[0].score;
+  const top3Cursos = cursoSorted.slice(0,3).map(([k,v])=>({k,v}));
+  const maxCursoScore = top3Cursos[0].v;
+
+  window._save({
+    nome:ST.nome, idade:ST.idade, serie:ST.serie, escola:ST.escola, zap:ST.zap, extras:ST.extras,
+    holland: Object.fromEntries(Object.entries(H).map(([k,v])=>[k,Math.round(v*10)/10])),
+    top3_areas: top3Areas.map(a=>a.nome),
+    top3_cursos_universo: top3Cursos.map(t=>CURSOS[t.k]?.nome||t.k),
+  });
+
+  go(7);
+  const el = document.getElementById('s7');
+  const prNome = ST.nome.split(' ')[0];
+  el.innerHTML = `<div class="loading"><div class="spin"></div><h3>Analisando seu perfil, ${prNome}…</h3><p>Mapeando sua vocação e cruzando com os cursos da UNIVERSO.</p><div class="stream-box" id="stb">Processando dimensões vocacionais…</div></div>`;
+
+  const hollandTop = Object.entries(H).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>`${k}(${v.toFixed(1)})`).join(', ');
+  const anchTop = Object.entries(Anch).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>`${k}(${v})`).join(', ');
+  const profileTxt = `Nome: ${ST.nome}, ${ST.idade} anos, ${ST.serie}${ST.escola?', '+ST.escola:''}
+Holland RIASEC: R=${H.R.toFixed(1)} I=${H.I.toFixed(1)} A=${H.A.toFixed(1)} S=${H.S.toFixed(1)} E=${H.E.toFixed(1)} C=${H.C.toFixed(1)} | Tríade: ${hollandTop}
+Big Five parcial: Abertura=${BF.O.toFixed(1)} Conscienciosidade=${BF.CO.toFixed(1)} Extroversão=${BF.EX.toFixed(1)}
+Âncoras dominantes: ${anchTop}
+Top 3 áreas vocacionais: ${top3Areas.map((a,i)=>`${i+1}. ${a.nome}`).join(', ')}
+Top 3 cursos UNIVERSO: ${top3Cursos.map((t,i)=>`${i+1}. ${CURSOS[t.k]?.nome||t.k}`).join(', ')}
+Observação: ${ST.extras||'nenhuma'}`.trim();
+
+  const prompt = `Você é orientador vocacional especializado da UNIVERSO Goiânia. Analise o perfil psicométrico e gere um laudo vocacional estruturado em DUAS CAMADAS: primeiro a vocação ampla do estudante, depois os cursos específicos da UNIVERSO.
+
+PERFIL PSICOMÉTRICO:
+${profileTxt}
+
+Gere o laudo com EXATAMENTE este formato:
+
+---ANALISE---
+[3 parágrafos curtos e personalizados: 1) descreva o tipo Holland dominante e o que isso significa para este estudante; 2) os traços de personalidade e âncoras de carreira predominantes; 3) o que mais se destaca no perfil geral. Seja empático e científico. Máximo 130 palavras.]
+---FIM_ANALISE---
+
+---AREA1---
+NOME: ${top3Areas[0].nome}
+MATCH: [1 frase explicando por que este estudante se encaixa nessa grande área, citando as dimensões Holland/âncoras específicas dele]
+DESC: [1 frase descrevendo o universo de possibilidades desta área além da UNIVERSO]
+---FIM_AREA1---
+
+---AREA2---
+NOME: ${top3Areas[1].nome}
+MATCH: [1 frase de conexão com o perfil]
+DESC: [1 frase sobre as possibilidades desta área]
+---FIM_AREA2---
+
+---AREA3---
+NOME: ${top3Areas[2].nome}
+MATCH: [1 frase de conexão com o perfil]
+DESC: [1 frase sobre as possibilidades desta área]
+---FIM_AREA3---
+
+---CURSO1---
+CURSO: ${CURSOS[top3Cursos[0].k]?.nome}
+MATCH: [1 frase conectando as dimensões Holland/âncoras deste estudante a este curso específico]
+PRO1: [vantagem concreta relacionada ao perfil deste estudante]
+PRO2: [segunda vantagem específica]
+PRO3: [terceira vantagem]
+CARREIRA1: [opção]
+CARREIRA2: [opção]
+CARREIRA3: [opção]
+---FIM_CURSO1---
+
+---CURSO2---
+CURSO: ${CURSOS[top3Cursos[1].k]?.nome}
+MATCH: [1 frase de conexão]
+PRO1: [vantagem específica]
+PRO2: [vantagem]
+PRO3: [vantagem]
+CARREIRA1: [opção]
+CARREIRA2: [opção]
+CARREIRA3: [opção]
+---FIM_CURSO2---
+
+---CURSO3---
+CURSO: ${CURSOS[top3Cursos[2].k]?.nome}
+MATCH: [1 frase de conexão]
+PRO1: [vantagem]
+PRO2: [vantagem]
+PRO3: [vantagem]
+CARREIRA1: [opção]
+CARREIRA2: [opção]
+CARREIRA3: [opção]
+---FIM_CURSO3---
+
+---MENSAGEM---
+[1 parágrafo de encorajamento personalizado para ${ST.nome.split(' ')[0]} — mencione a vocação ampla identificada e convide a conhecer a UNIVERSO Goiânia. Máximo 70 palavras.]
+---FIM_MENSAGEM---
+
+REGRA: Se Administração for um dos 3 cursos da UNIVERSO, destaque que é referência em gestão e empreendedorismo da UNIVERSO, coordenado por profissionais experientes com atuação prática no mercado.`;
+
+  let aiText = null;
+  try {
+    const samp = await claude?.use?.('sample');
+    if (!samp) throw new Error('no-ai');
+    let full = '';
+    const stb = document.getElementById('stb');
+    await samp(prompt, { onText:({text})=>{full=text; if(stb) stb.textContent=text.slice(-400);} });
+    aiText = full;
+  } catch(e){}
+
+  renderLaudo(top3Areas, maxAreaScore, top3Cursos, maxCursoScore, H, aiText);
+}
+
+function sec(txt,tag){const m=txt?.match(new RegExp(`---${tag}---([\\s\\S]*?)---FIM_${tag}---`));return m?m[1].trim():''}
+function fld(blk,f){const m=blk?.match(new RegExp(`^${f}:\\s*(.+)$`,'m'));return m?m[1].trim():''}
+function flds(blk,f){const r=[];for(let i=1;i<=5;i++){const v=fld(blk,f+i);if(v)r.push(v)}return r}
+
+/* ══════════════════════════════════════════════
+   RENDER LAUDO — DUAS CAMADAS
+══════════════════════════════════════════════ */
+function renderLaudo(top3Areas, maxAreaScore, top3Cursos, maxCursoScore, H, aiText){
+  const el = document.getElementById('s7');
+  const nome = ST.nome.split(' ')[0];
+  const hollandSorted = Object.entries(H).sort((a,b)=>b[1]-a[1]);
+  const hollandNames = {R:'Realista',I:'Investigativo',A:'Artístico',S:'Social',E:'Empreendedor',C:'Convencional'};
+
+  const analise = sec(aiText,'ANALISE');
+  const mensagem = sec(aiText,'MENSAGEM');
+  const aiAreas = [sec(aiText,'AREA1'),sec(aiText,'AREA2'),sec(aiText,'AREA3')];
+  const aiCursos = [sec(aiText,'CURSO1'),sec(aiText,'CURSO2'),sec(aiText,'CURSO3')];
+
+  // ── CABEÇALHO ─────────────────────────────
+  let html = `
+  <div class="laudo-hdr">
+    <div class="l-sub">Laudo Vocacional Científico</div>
+    <h2>🎓 ${nome}, seu resultado chegou!</h2>
+    <span class="laudo-tag">📊 Base: Holland · Big Five · Schein</span>
+  </div>
+
+  <!-- PERFIL HOLLAND -->
+  <div class="scores-wrap">
+    <div class="scores-ttl">🔍 Seu perfil Holland RIASEC</div>
+    ${hollandSorted.map(([k,v])=>{
+      const pct = Math.round((v-1)/4*100);
+      return `<div class="score-bar-row">
+        <div class="score-bar-lbl">${hollandNames[k]||k}</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:${Math.max(4,pct)}%;background:${HC[k]}"></div></div>
+        <div class="score-pct" style="color:${HC[k]}">${pct}%</div>
+      </div>`;
+    }).join('')}
+    <p style="font-size:12px;color:var(--tf);margin-top:10px;font-style:italic">Tríade dominante: <strong>${hollandSorted.slice(0,3).map(([k])=>`${hollandNames[k]} (${k})`).join(' · ')}</strong></p>
+  </div>
+
+  <!-- ANÁLISE GERAL -->
+  <div class="analise-box">
+    <div class="analise-ttl">🧠 <span>Análise do seu perfil</span></div>
+    <div class="analise-txt">${(analise||`Seu perfil combina os interesses ${hollandSorted.slice(0,3).map(([k])=>hollandNames[k]).join(', ')} com traços de personalidade únicos. Confira as áreas vocacionais e os cursos que mais se alinham com quem você é!`).replace(/\n/g,'<br>')}</div>
+  </div>`;
+
+  // ── CAMADA 1: GRANDES ÁREAS VOCACIONAIS ───
+  html += `
+  <div class="area-voc-ttl">🗺️ Suas áreas vocacionais</div>
+  <div class="area-voc-sub">Independente de onde você vai estudar — estas são as grandes áreas que combinam com o seu perfil</div>`;
+
+  const areaColors = [
+    {cc:'#C0392B',rank:'1º'},{cc:'#2980B9',rank:'2º'},{cc:'#27AE60',rank:'3º'}
+  ];
+  top3Areas.forEach((area, idx) => {
+    const pct = Math.round(area.score/maxAreaScore*100);
+    const ac = areaColors[idx];
+    const aiBlk = aiAreas[idx];
+    const matchTxt = fld(aiBlk,'MATCH') || `Suas dimensões Holland e âncoras de carreira apontam forte afinidade com ${area.nome}.`;
+    const descTxt = fld(aiBlk,'DESC') || area.desc;
+    html += `
+    <div class="avc" style="background:${area.bg};border:1.5px solid ${area.color}33">
+      <div class="avc::before" style="display:none"></div>
+      <div style="position:absolute;top:0;left:0;bottom:0;width:6px;background:${area.color};border-radius:20px 0 0 20px"></div>
+      <div class="avc-icon" style="margin-left:10px">${area.icon}</div>
+      <div class="avc-body">
+        <span class="avc-rank" style="background:${ac.cc};top:12px;right:14px;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;color:#fff;position:absolute">${ac.rank}</span>
+        <div class="avc-title" style="color:${area.textColor}">${area.nome}</div>
+        <div class="avc-match">
+          <div class="avc-match-lbl">Compatibilidade</div>
+          <div class="avc-match-bg"><div class="avc-match-fill" style="width:${pct}%;background:${area.color}"></div></div>
+          <div class="avc-match-pct" style="color:${area.color}">${pct}%</div>
+        </div>
+        <div class="avc-desc">${matchTxt}</div>
+        <div class="avc-tags">
+          ${area.exemplos.slice(0,5).map(e=>`<span class="avc-tag" style="border-color:${area.color}44;color:${area.color};background:${area.color}10">${e}</span>`).join('')}
+          ${area.exemplos.length>5?`<span class="avc-tag" style="border-color:${area.color}44;color:${area.color};background:${area.color}10">+${area.exemplos.length-5} mais</span>`:''}
+        </div>
+      </div>
+    </div>`;
+  });
+
+  // ── CAMADA 2: CURSOS DA UNIVERSO ───────────
+  html += `
+  <div class="univ-section">
+    <h3>🎓 Na UNIVERSO Goiânia</h3>
+    <p>Dentro da sua vocação, estes são os cursos que oferecemos e que mais combinam com o seu perfil</p>
+  </div>
+  <div class="courses-ttl">🏆 Cursos da UNIVERSO para o seu perfil</div>`;
+
+  const cardCls = ['cc-1','cc-2','cc-3'];
+  top3Cursos.forEach(({k:cid,v:score}, idx) => {
+    const curso = CURSOS[cid];
+    if(!curso) return;
+    const isAdm = curso.isAdm;
+    const cls = isAdm ? 'cc-adm' : cardCls[idx]||cardCls[2];
+    const pct = Math.round(score/maxCursoScore*100);
+    const aiBlk = aiCursos[idx];
+    const matchTxt = fld(aiBlk,'MATCH') || `Este curso se conecta diretamente ao seu perfil.`;
+    const pros = flds(aiBlk,'PRO').length ? flds(aiBlk,'PRO') : curso.pros;
+    const cars = flds(aiBlk,'CARREIRA').length ? flds(aiBlk,'CARREIRA') : curso.carreiras;
+
+    html += `
+    <div class="cc ${cls}">
+      <div class="cc-rank">${idx+1}</div>
+      ${isAdm?'<div class="adm-star">⭐ DESTAQUE ADM</div>':''}
+      <div class="cc-title">${curso.icon} ${curso.nome}</div>
+      <div class="cc-area">${curso.area}</div>
+      <div class="match-wrap">
+        <div class="match-lbl">Compatibilidade</div>
+        <div class="match-bar-bg"><div class="match-bar-fill" style="width:${pct}%"></div></div>
+        <div class="match-pct">${pct}%</div>
+      </div>
+      <div class="cc-match-txt">${matchTxt}</div>
+      <div class="cc-sec-lbl">✅ Por que é para você</div>
+      <ul class="pros-list">${pros.slice(0,4).map(p=>`<li><span class="blt">✓</span><span>${p}</span></li>`).join('')}</ul>
+      <div class="cc-sec-lbl">💼 Caminhos de carreira</div>
+      <div class="chips">${cars.map(c=>`<span class="chip">${c}</span>`).join('')}</div>
+    </div>`;
+  });
+
+  // ── MENSAGEM FINAL + SHARE ─────────────────
+  const msgFinal = mensagem ||
+    `${nome}, seu perfil revela talentos genuínos e uma vocação clara! A UNIVERSO Goiânia tem o ambiente certo para transformar esse potencial em uma carreira de impacto. Conheça nossos cursos e venha descobrir seu futuro com a gente!`;
+
+  html += `
+  <div class="analise-box" style="border-left-color:var(--red)">
+    <div class="analise-ttl">💬 <span>Mensagem personalizada</span></div>
+    <div class="analise-txt">${msgFinal.replace(/\n/g,'<br>')}</div>
+  </div>
+
+  <div class="share-sec">
+    <h3>📲 Compartilhe seu resultado!</h3>
+    <p>Envie para seus pais, amigos ou guarde para não esquecer!</p>
+    <div class="share-btns">
+      <button class="btn btn-wa" onclick="shareWA()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Compartilhar via WhatsApp
+      </button>
+      <button class="btn btn-sec" onclick="location.reload()">🔄 Refazer o Teste</button>
+    </div>
+    <div style="margin-top:16px">
+      <p style="font-size:12px;color:var(--ts);margin-bottom:6px;font-weight:600">📋 Selecione tudo abaixo e copie (Ctrl+A → Ctrl+C):</p>
+      <textarea id="txt-resultado" readonly onclick="this.select()" style="width:100%;min-height:160px;padding:12px;border:2px solid var(--bm);border-radius:10px;background:var(--sur2);color:var(--txt);font-family:var(--ff2);font-size:13px;line-height:1.6;resize:vertical;cursor:text"></textarea>
+    </div>
+  </div>`;
+
+  el.innerHTML = html;
+  window.scrollTo({top:0,behavior:'smooth'});
+  // preenche textarea com texto copiável
+  const {areaSorted:aS2, cursoSorted:cS2} = calcularTudo();
+  const t3A = aS2.slice(0,3), t3C = cS2.slice(0,3), mxC = t3C[0][1];
+  const txta = document.getElementById('txt-resultado');
+  if(txta) txta.value =
+    `🎓 TESTE VOCACIONAL — UNIVERSO GOIÂNIA\n` +
+    `${'─'.repeat(38)}\n` +
+    `👤 ${nome}  |  ${ST.idade} anos  |  ${ST.serie}\n\n` +
+    `🗺️ MINHAS ÁREAS VOCACIONAIS:\n` +
+    t3A.map((a,i)=>`  ${i+1}. ${a.icon} ${a.nome}`).join('\n')+'\n\n'+
+    `🎓 CURSOS DA UNIVERSO PARA MIM:\n`+
+    t3C.map(([k,v],i)=>{ const c=CURSOS[k]; return c?`  ${i+1}. ${c.nome} — ${Math.round(v/mxC*100)}% compatibilidade`:''; }).join('\n')+'\n\n'+
+    `✨ Faça o teste: https://luciakratz-arch.github.io/UNIVERSOvocacional/\n📍 UNIVERSO Goiânia — Centro Universitário`;
+}
+
+/* ══════════════════════════════════════════════
+   COPIAR RESULTADO
+══════════════════════════════════════════════ */
+function copiarResultado(){
+  const {areaSorted, cursoSorted} = calcularTudo();
+  const top3A = areaSorted.slice(0,3);
+  const top3C = cursoSorted.slice(0,3);
+  const maxC = top3C[0][1];
+  const txt =
+    `🎓 TESTE VOCACIONAL — UNIVERSO GOIÂNIA\n` +
+    `${'─'.repeat(40)}\n` +
+    `👤 ${ST.nome}  |  ${ST.idade} anos  |  ${ST.serie}\n\n` +
+    `🗺️ ÁREAS VOCACIONAIS\n` +
+    top3A.map((a,i)=>`  ${i+1}. ${a.icon} ${a.nome}`).join('\n') + '\n\n' +
+    `🎓 CURSOS DA UNIVERSO PARA VOCÊ\n` +
+    top3C.map(([k,v],i)=>{
+      const c = CURSOS[k]; if(!c) return '';
+      return `  ${i+1}. ${c.nome} — ${Math.round(v/maxC*100)}% compatibilidade`;
+    }).join('\n') + '\n\n' +
+    `✨ Faça o teste: https://luciakratz-arch.github.io/UNIVERSOvocacional/`;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn = document.getElementById('btn-copiar');
+    btn.textContent = '✅ Copiado!';
+    setTimeout(()=>{ btn.innerHTML='📋 Copiar Resultado'; },2500);
+  }).catch(()=> alert('Não foi possível copiar automaticamente. Use Ctrl+A e Ctrl+C na área de resultado.'));
+}
+
+/* ══════════════════════════════════════════════
+   WHATSAPP SHARE
+══════════════════════════════════════════════ */
+function shareWA(){
+  const {areaSorted, cursoSorted} = calcularTudo();
+  const top3A = areaSorted.slice(0,3);
+  const top3C = cursoSorted.slice(0,3);
+  const maxC = top3C[0][1];
+  const msg = encodeURIComponent(
+    `🎓 *Meu Resultado — Teste Vocacional UNIVERSO*\n\n` +
+    `Olá! Me chamo *${ST.nome}* e descobri minha vocação!\n\n` +
+    `🗺️ *Minhas áreas vocacionais:*\n`+
+    top3A.map((a,i)=>`${i+1}. ${a.nome}`).join('\n')+
+    `\n\n🎓 *Cursos da UNIVERSO para mim:*\n`+
+    top3C.map(([k,v],i)=>`${i+1}. ${CURSOS[k]?.nome||k} — ${Math.round(v/maxC*100)}% de compatibilidade`).join('\n')+
+    `\n\n✨ Faça o seu também:\nhttps://luciakratz-arch.github.io/UNIVERSOvocacional/\n\n`+
+    `📍 *UNIVERSO Goiânia — Centro Universitário*`
+  );
+  window.open('https://wa.me/?text='+msg,'_blank');
+}
+</script>
+</body>
+</html>
