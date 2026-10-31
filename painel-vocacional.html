@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Painel Vocacional — UNIVERSO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bd:#1B3A6B;--bm:#2E6DB4;--bl:#4A90D9;
+  --red:#C0392B;--red2:#E74C3C;
+  --green:#1A7A3A;--green2:#27AE60;
+  --gold:#D4A017;--gold2:#F0C030;
+  --bg:#EEF3FB;--sur:#FFFFFF;--sur2:#E8F0FB;
+  --bor:#C8D8EF;--txt:#1A2A40;--ts:#4A6080;--tf:#8AA0B8;--inp:#FFFFFF;
+  --ff1:'Montserrat',sans-serif;--ff2:'Inter',sans-serif;
+  --sh1:0 2px 8px rgba(27,58,107,.08);--sh2:0 4px 20px rgba(27,58,107,.14);--sh3:0 8px 36px rgba(27,58,107,.2);
+  --a1:#E67E22;--a2:#27AE60;--a3:#8E44AD;--a4:#2980B9;--a5:#D4AC0D;--a6:#C0392B;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C1720;--sur:#13233A;--sur2:#192E47;--bor:#243D5C;--txt:#E4EEF8;--ts:#7AA0C0;--tf:#4A6A8A;--inp:#192E47;
+}}
+:root[data-theme="dark"]{--bg:#0C1720;--sur:#13233A;--sur2:#192E47;--bor:#243D5C;--txt:#E4EEF8;--ts:#7AA0C0;--tf:#4A6A8A;--inp:#192E47;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;-webkit-text-size-adjust:100%}
+body{min-height:100%;background:var(--bg);color:var(--txt);font-family:var(--ff2);font-size:15px;line-height:1.6;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+button{cursor:pointer;font-family:var(--ff2)}
+input,select{font-family:var(--ff2);font-size:15px}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,var(--bd),var(--bm));padding:11px 18px 13px;display:flex;align-items:center;gap:12px;border-bottom:3px solid var(--red);position:sticky;top:env(safe-area-inset-top,0);z-index:200;box-shadow:var(--sh2)}
+.hdr-logo{width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.hdr-name{font-family:var(--ff1);font-weight:900;font-size:16px;color:#fff;letter-spacing:.3px;line-height:1.1}
+.hdr-sub{font-size:10px;color:rgba(255,255,255,.55);letter-spacing:.4px;font-weight:600}
+.hdr-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px}
+
+/* NAV ABAS */
+.nav{background:var(--sur);border-bottom:1px solid var(--bor);display:flex;overflow-x:auto;gap:0;padding:0 12px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 57px);z-index:190;box-shadow:var(--sh1)}
+.nav-btn{padding:12px 16px;font-family:var(--ff1);font-size:12px;font-weight:700;color:var(--ts);border:none;background:transparent;border-bottom:3px solid transparent;white-space:nowrap;letter-spacing:.3px;transition:all .2s}
+.nav-btn.on{color:var(--bm);border-bottom-color:var(--bm)}
+
+/* LOGIN */
+.login-wrap{max-width:440px;margin:60px auto;padding:0 16px}
+.login-card{background:var(--sur);border:1px solid var(--bor);border-radius:20px;padding:32px 24px;box-shadow:var(--sh2);text-align:center}
+.login-icon{font-size:48px;margin-bottom:12px}
+.login-titulo{font-family:var(--ff1);font-size:18px;font-weight:900;color:var(--bd);margin-bottom:6px}
+.login-sub{font-size:13px;color:var(--ts);margin-bottom:24px}
+.login-erro{font-size:12px;color:var(--red2);margin-top:8px;display:none}
+
+/* MAIN */
+.main{max-width:860px;margin:0 auto;padding:22px 16px 60px}
+
+/* CARDS STAT */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:var(--sur);border:1px solid var(--bor);border-radius:16px;padding:16px 18px;box-shadow:var(--sh1);text-align:center}
+.stat-num{font-family:var(--ff1);font-size:32px;font-weight:900;color:var(--bm);line-height:1}
+.stat-lbl{font-size:11px;color:var(--ts);margin-top:4px;font-weight:600;letter-spacing:.2px;text-transform:uppercase}
+
+/* CARD GENÉRICO */
+.card{background:var(--sur);border:1px solid var(--bor);border-radius:18px;padding:20px;box-shadow:var(--sh1);margin-bottom:16px}
+.card-ttl{font-family:var(--ff1);font-size:13px;font-weight:700;color:var(--bm);margin-bottom:14px;display:flex;align-items:center;gap:7px;text-transform:uppercase;letter-spacing:.4px}
+
+/* BARRA RANKING */
+.rank-item{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.rank-label{font-size:13px;font-weight:600;color:var(--txt);min-width:120px;max-width:200px;flex:1}
+.rank-bar-wrap{flex:2;height:20px;background:var(--sur2);border-radius:10px;overflow:hidden}
+.rank-bar{height:100%;border-radius:10px;transition:width .6s ease}
+.rank-pct{font-size:12px;font-weight:700;color:var(--ts);min-width:36px;text-align:right}
+
+/* FILTROS */
+.filtros{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.filtro-sel{padding:8px 12px;border:1.5px solid var(--bor);border-radius:10px;background:var(--inp);color:var(--txt);font-size:13px;outline:none;transition:border-color .2s}
+.filtro-sel:focus{border-color:var(--bm)}
+.filtro-inp{padding:8px 12px;border:1.5px solid var(--bor);border-radius:10px;background:var(--inp);color:var(--txt);font-size:13px;outline:none;flex:1;min-width:160px}
+.filtro-inp:focus{border-color:var(--bm)}
+
+/* TABELA */
+.tbl-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--bor)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--sur2)}
+th{padding:10px 12px;text-align:left;font-family:var(--ff1);font-size:11px;font-weight:700;color:var(--ts);letter-spacing:.4px;text-transform:uppercase;border-bottom:1px solid var(--bor);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--bor);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--sur2)}
+
+/* BADGE HOLLAND */
+.hbadge{display:inline-block;padding:2px 7px;border-radius:6px;font-size:11px;font-weight:700;margin:1px}
+.hR{background:#FFF3E0;color:#E67E22}
+.hI{background:#E8F4FD;color:#2980B9}
+.hA{background:#F5EEF8;color:#8E44AD}
+.hS{background:#EAFAF1;color:#27AE60}
+.hE{background:#FDFEFE;color:#C0392B}
+.hC{background:#FEFCE8;color:#D4AC0D}
+
+/* PIZZA SVG */
+.pizza-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.pizza-legend{flex:1;min-width:160px}
+.pizza-legend-item{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px}
+.pizza-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+
+/* DETALHE */
+.det-overlay{display:none;position:fixed;inset:0;background:rgba(10,20,40,.55);z-index:500;align-items:flex-start;justify-content:center;padding:20px 12px;overflow-y:auto}
+.det-overlay.on{display:flex}
+.det-box{background:var(--sur);border-radius:20px;padding:24px;max-width:560px;width:100%;box-shadow:var(--sh3);margin:auto}
+.det-nome{font-family:var(--ff1);font-size:20px;font-weight:900;color:var(--bd);margin-bottom:2px}
+.det-meta{font-size:12px;color:var(--ts);margin-bottom:16px}
+.det-sec{margin-bottom:14px}
+.det-sec-ttl{font-family:var(--ff1);font-size:11px;font-weight:700;color:var(--bm);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.det-chip{display:inline-block;background:var(--sur2);border:1px solid var(--bor);border-radius:8px;padding:3px 10px;font-size:12px;margin:2px}
+
+/* BTN */
+.btn{padding:10px 18px;border:none;border-radius:10px;font-family:var(--ff1);font-weight:700;font-size:13px;letter-spacing:.2px;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn:active{transform:scale(.97)}
+.btn-pri{background:linear-gradient(135deg,var(--bd),var(--bm));color:#fff;box-shadow:var(--sh1)}
+.btn-sec{background:var(--sur);color:var(--ts);border:1.5px solid var(--bor)}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:8px}
+
+.inp{width:100%;padding:11px 13px;border:1.5px solid var(--bor);border-radius:12px;background:var(--inp);color:var(--txt);font-size:16px;outline:none;transition:border-color .2s}
+.inp:focus{border-color:var(--bm);box-shadow:0 0 0 3px rgba(46,109,180,.14)}
+
+.empty{text-align:center;padding:40px 16px;color:var(--tf);font-size:13px}
+.spin{width:36px;height:36px;border:3px solid var(--bor);border-top-color:var(--bm);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto 12px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.toast-el{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1A2A40;color:#fff;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-logo">🎓</div>
+  <div>
+    <div class="hdr-name">UNIVERSO Vocacional</div>
+    <div class="hdr-sub">PAINEL ADMINISTRATIVO</div>
+  </div>
+  <span class="hdr-badge" id="badge-total">—</span>
+</div>
+
+<!-- LOGIN -->
+<div id="area-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-icon">🔐</div>
+      <div class="login-titulo">Acesso Restrito</div>
+      <div class="login-sub">Painel exclusivo para coordenadores da UNIVERSO</div>
+      <input class="inp" id="senha-inp" type="password" placeholder="Senha de acesso" style="text-align:center;letter-spacing:3px;font-size:18px;margin-bottom:12px" onkeydown="if(event.key==='Enter')entrar()">
+      <button class="btn btn-pri" style="width:100%;justify-content:center;min-height:48px" onclick="entrar()">🔓 Entrar</button>
+      <div class="login-erro" id="login-erro">Senha incorreta. Tente novamente.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAINEL -->
+<div id="area-painel" style="display:none">
+  <nav class="nav">
+    <button class="nav-btn on" onclick="aba('geral')" id="tab-geral">📊 Visão Geral</button>
+    <button class="nav-btn" onclick="aba('individual')" id="tab-individual">👤 Individual</button>
+    <button class="nav-btn" onclick="aba('cursos')" id="tab-cursos">🏫 Por Curso</button>
+    <button class="nav-btn" onclick="aba('holland')" id="tab-holland">🔬 Holland</button>
+  </nav>
+
+  <div class="main">
+
+    <!-- ABA GERAL -->
+    <div id="aba-geral">
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card"><div class="spin"></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-ttl">🏆 Top cursos mais indicados</div>
+        <div id="rank-cursos"><div class="empty"><div class="spin"></div></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-ttl">🎯 Áreas vocacionais mais frequentes</div>
+        <div id="rank-areas"><div class="empty"><div class="spin"></div></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-ttl">🔬 Perfil Holland médio — todas as respostas</div>
+        <div id="holland-geral"><div class="empty"><div class="spin"></div></div></div>
+      </div>
+    </div>
+
+    <!-- ABA INDIVIDUAL -->
+    <div id="aba-individual" style="display:none">
+      <div class="filtros">
+        <input class="filtro-inp" id="busca-nome" type="text" placeholder="🔍 Buscar por nome ou escola..." oninput="renderTabela()">
+        <select class="filtro-sel" id="filtro-serie" onchange="renderTabela()">
+          <option value="">Todas as séries</option>
+          <option>1º ano EM</option><option>2º ano EM</option><option>3º ano EM</option>
+          <option>Concluído EM</option><option>Faculdade</option><option>Outro</option>
+        </select>
+        <select class="filtro-sel" id="filtro-curso" onchange="renderTabela()">
+          <option value="">Todos os cursos</option>
+        </select>
+      </div>
+      <div id="contagem-filtro" style="font-size:12px;color:var(--ts);margin-bottom:10px"></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome</th>
+              <th>Idade</th>
+              <th>Série</th>
+              <th>Escola</th>
+              <th>Tríade Holland</th>
+              <th>1º Curso</th>
+              <th>Data</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ABA POR CURSO -->
+    <div id="aba-cursos" style="display:none">
+      <div class="filtros">
+        <select class="filtro-sel" id="filtro-curso-seg" onchange="renderCursoSeg()" style="min-width:220px">
+          <option value="">Selecione um curso...</option>
+        </select>
+      </div>
+      <div id="curso-seg-content"><div class="empty">Selecione um curso acima para ver o relatório segmentado.</div></div>
+    </div>
+
+    <!-- ABA HOLLAND -->
+    <div id="aba-holland" style="display:none">
+      <div class="card">
+        <div class="card-ttl">🔬 Distribuição Holland — todas as respostas</div>
+        <div id="holland-dist"></div>
+      </div>
+      <div class="card">
+        <div class="card-ttl">📊 Perfil médio por dimensão</div>
+        <div id="holland-radar"></div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /area-painel -->
+
+<!-- DETALHE INDIVIDUAL -->
+<div class="det-overlay" id="det-overlay" onclick="if(event.target===this)fecharDet()">
+  <div class="det-box" id="det-box"></div>
+</div>
+
+<div class="toast-el" id="toast-el"></div>
+
+<script>
+const SENHA = 'universo2026';
+const PID = 'anamnese-dralucia';
+const KEY = 'AIzaSyBaJDEuOub7IBDVQMakk2rmyG6e8xRhP2E';
+const COL = 'universo-vocacional';
+
+const HOLLAND_NOMES = {R:'Realista',I:'Investigativo',A:'Artístico',S:'Social',E:'Empreendedor',C:'Convencional'};
+const HOLLAND_CORES = {R:'#E67E22',I:'#2980B9',A:'#8E44AD',S:'#27AE60',E:'#C0392B',C:'#D4AC0D'};
+
+let todos = [];
+let abaAtual = 'geral';
+
+function entrar(){
+  const s = document.getElementById('senha-inp').value;
+  if(s === SENHA){
+    document.getElementById('area-login').style.display='none';
+    document.getElementById('area-painel').style.display='block';
+    carregarDados();
+  } else {
+    document.getElementById('login-erro').style.display='block';
+    document.getElementById('senha-inp').value='';
+    document.getElementById('senha-inp').focus();
+  }
+}
+
+function aba(nome){
+  abaAtual = nome;
+  ['geral','individual','cursos','holland'].forEach(a=>{
+    document.getElementById('aba-'+a).style.display = a===nome ? 'block' : 'none';
+    document.getElementById('tab-'+a).classList.toggle('on', a===nome);
+  });
+  if(nome==='individual') renderTabela();
+  if(nome==='cursos') renderCursoSeg();
+  if(nome==='holland') renderHollandAba();
+}
+
+function toast(msg){
+  const el=document.getElementById('toast-el');
+  el.textContent=msg;el.style.opacity='1';
+  setTimeout(()=>el.style.opacity='0',2500);
+}
+
+/* ── CARREGAR FIRESTORE ── */
+async function carregarDados(){
+  try{
+    let docs=[], nextPage=null;
+    do{
+      const u=`https://firestore.googleapis.com/v1/projects/${PID}/databases/(default)/documents/${COL}?key=${KEY}&pageSize=300${nextPage?'&pageToken='+nextPage:''}`;
+      const r=await fetch(u);
+      const d=await r.json();
+      if(d.documents) docs=[...docs,...d.documents];
+      nextPage=d.nextPageToken||null;
+    }while(nextPage);
+
+    todos=docs.map(doc=>{
+      const f=doc.fields||{};
+      const get=(k)=>{
+        const v=f[k];
+        if(!v) return '';
+        if(v.stringValue!==undefined) return v.stringValue;
+        if(v.doubleValue!==undefined) return v.doubleValue;
+        if(v.integerValue!==undefined) return Number(v.integerValue);
+        if(v.booleanValue!==undefined) return v.booleanValue;
+        if(v.nullValue!==undefined) return null;
+        if(v.arrayValue){return (v.arrayValue.values||[]).map(x=>x.stringValue||x.doubleValue||'');}
+        if(v.mapValue){
+          const obj={};
+          Object.entries(v.mapValue.fields||{}).forEach(([k2,v2])=>{
+            obj[k2]=v2.doubleValue!==undefined?v2.doubleValue:(v2.stringValue||'');
+          });
+          return obj;
+        }
+        return '';
+      };
+      return {
+        id: doc.name.split('/').pop(),
+        nome: get('nome'),
+        idade: get('idade'),
+        serie: get('serie'),
+        escola: get('escola'),
+        zap: get('zap'),
+        holland: get('holland')||{},
+        top3_areas: get('top3_areas')||[],
+        top3_cursos: get('top3_cursos_universo')||[],
+        ts: doc.createTime||'',
+      };
+    }).filter(d=>d.nome && d.nome !== 'teste');
+
+    document.getElementById('badge-total').textContent = todos.length + ' respostas';
+    renderGeral();
+    preencherFiltros();
+  }catch(e){
+    document.getElementById('stats-grid').innerHTML='<div class="empty">❌ Erro ao carregar dados. Verifique a conexão.</div>';
+    console.error(e);
+  }
+}
+
+/* ── VISÃO GERAL ── */
+function renderGeral(){
+  // Stats
+  const idades = todos.map(d=>Number(d.idade)).filter(n=>n>0);
+  const idadeMedia = idades.length ? (idades.reduce((a,b)=>a+b,0)/idades.length).toFixed(1) : '—';
+  const series = [...new Set(todos.map(d=>d.serie).filter(Boolean))];
+  document.getElementById('stats-grid').innerHTML=`
+    <div class="stat-card"><div class="stat-num">${todos.length}</div><div class="stat-lbl">Total de testes</div></div>
+    <div class="stat-card"><div class="stat-num">${idadeMedia}</div><div class="stat-lbl">Idade média</div></div>
+    <div class="stat-card"><div class="stat-num">${series.length}</div><div class="stat-lbl">Séries distintas</div></div>
+    <div class="stat-card"><div class="stat-num">${[...new Set(todos.map(d=>d.escola).filter(Boolean))].length}</div><div class="stat-lbl">Escolas/cidades</div></div>
+  `;
+
+  // Top cursos
+  const cursoCont={};
+  todos.forEach(d=>(d.top3_cursos||[]).forEach((c,i)=>{if(c){cursoCont[c]=(cursoCont[c]||0)+(3-i);}}));
+  const cursoSorted=Object.entries(cursoCont).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const maxC=cursoSorted[0]?.[1]||1;
+  const cores=['#1B3A6B','#2E6DB4','#4A90D9','#E67E22','#27AE60','#8E44AD','#C0392B','#D4AC0D','#2980B9','#1A7A3A'];
+  document.getElementById('rank-cursos').innerHTML=cursoSorted.map(([nome,v],i)=>`
+    <div class="rank-item">
+      <div class="rank-label">${nome}</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(v/maxC*100)}%;background:${cores[i%cores.length]}"></div></div>
+      <div class="rank-pct">${v}</div>
+    </div>`).join('');
+
+  // Top áreas
+  const areaCont={};
+  todos.forEach(d=>(d.top3_areas||[]).forEach((a,i)=>{if(a){areaCont[a]=(areaCont[a]||0)+(3-i);}}));
+  const areaSorted=Object.entries(areaCont).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const maxA=areaSorted[0]?.[1]||1;
+  document.getElementById('rank-areas').innerHTML=areaSorted.map(([nome,v],i)=>`
+    <div class="rank-item">
+      <div class="rank-label">${nome}</div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(v/maxA*100)}%;background:${cores[i%cores.length]}"></div></div>
+      <div class="rank-pct">${v}</div>
+    </div>`).join('');
+
+  // Holland médio geral
+  renderHollandMedia('holland-geral', todos);
+}
+
+function renderHollandMedia(elId, lista){
+  const med={R:0,I:0,A:0,S:0,E:0,C:0};
+  const n=lista.filter(d=>d.holland&&Object.keys(d.holland).length>0).length||1;
+  lista.forEach(d=>{Object.entries(d.holland||{}).forEach(([k,v])=>{if(med[k]!==undefined) med[k]+=Number(v)||0;});});
+  Object.keys(med).forEach(k=>med[k]=med[k]/n);
+  const max=Math.max(...Object.values(med))||5;
+  document.getElementById(elId).innerHTML=Object.entries(med).map(([k,v])=>`
+    <div class="rank-item">
+      <div class="rank-label"><span class="hbadge h${k}">${k} — ${HOLLAND_NOMES[k]}</span></div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(v/5*100)}%;background:${HOLLAND_CORES[k]}"></div></div>
+      <div class="rank-pct">${v.toFixed(1)}</div>
+    </div>`).join('');
+}
+
+/* ── TABELA INDIVIDUAL ── */
+function preencherFiltros(){
+  const cursos=[...new Set(todos.flatMap(d=>d.top3_cursos||[]).filter(Boolean))].sort();
+  ['filtro-curso','filtro-curso-seg'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    cursos.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;el.appendChild(o);});
+  });
+}
+
+function renderTabela(){
+  const busca=(document.getElementById('busca-nome')?.value||'').toLowerCase();
+  const serie=document.getElementById('filtro-serie')?.value||'';
+  const curso=document.getElementById('filtro-curso')?.value||'';
+  const filtrados=todos.filter(d=>{
+    if(busca&&!(d.nome.toLowerCase().includes(busca)||(d.escola||'').toLowerCase().includes(busca))) return false;
+    if(serie&&d.serie!==serie) return false;
+    if(curso&&!(d.top3_cursos||[]).includes(curso)) return false;
+    return true;
+  });
+  document.getElementById('contagem-filtro').textContent=`${filtrados.length} resultado${filtrados.length!==1?'s':''}`;
+  document.getElementById('tbody').innerHTML=filtrados.map((d,i)=>{
+    const hollandTop=Object.entries(d.holland||{}).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    const data=d.ts?new Date(d.ts).toLocaleDateString('pt-BR'):'—';
+    return `<tr>
+      <td style="color:var(--tf);font-size:11px">${i+1}</td>
+      <td><strong>${d.nome||'—'}</strong></td>
+      <td>${d.idade||'—'}</td>
+      <td>${d.serie||'—'}</td>
+      <td style="font-size:12px;color:var(--ts)">${d.escola||'—'}</td>
+      <td>${hollandTop.map(([k])=>`<span class="hbadge h${k}">${k}</span>`).join('')}</td>
+      <td style="font-size:12px;color:var(--bm);font-weight:600">${(d.top3_cursos||[])[0]||'—'}</td>
+      <td style="font-size:11px;color:var(--tf)">${data}</td>
+      <td><button class="btn btn-sec btn-sm" onclick="verDet('${d.id}')">Ver</button></td>
+    </tr>`;
+  }).join('')||'<tr><td colspan="9" class="empty">Nenhum resultado para os filtros selecionados.</td></tr>';
+}
+
+function verDet(id){
+  const d=todos.find(x=>x.id===id);
+  if(!d) return;
+  const hollandTop=Object.entries(d.holland||{}).sort((a,b)=>b[1]-a[1]);
+  const data=d.ts?new Date(d.ts).toLocaleDateString('pt-BR'):'—';
+  document.getElementById('det-box').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+      <div>
+        <div class="det-nome">${d.nome||'—'}</div>
+        <div class="det-meta">${d.idade?d.idade+' anos · ':''} ${d.serie||''} · ${d.escola||''} · ${data}</div>
+      </div>
+      <button class="btn btn-sec btn-sm" onclick="fecharDet()">✕ Fechar</button>
+    </div>
+    <div class="det-sec">
+      <div class="det-sec-ttl">🔬 Perfil Holland RIASEC</div>
+      ${hollandTop.map(([k,v])=>`
+        <div class="rank-item" style="margin-bottom:6px">
+          <div style="min-width:130px"><span class="hbadge h${k}">${k} — ${HOLLAND_NOMES[k]}</span></div>
+          <div class="rank-bar-wrap" style="flex:2"><div class="rank-bar" style="width:${Math.round(Number(v)/5*100)}%;background:${HOLLAND_CORES[k]}"></div></div>
+          <div class="rank-pct">${Number(v).toFixed(1)}</div>
+        </div>`).join('')}
+    </div>
+    <div class="det-sec">
+      <div class="det-sec-ttl">🎯 Top 3 Áreas Vocacionais</div>
+      ${(d.top3_areas||[]).map((a,i)=>`<span class="det-chip">${i+1}. ${a}</span>`).join('') || '—'}
+    </div>
+    <div class="det-sec">
+      <div class="det-sec-ttl">🏫 Top 3 Cursos UNIVERSO</div>
+      ${(d.top3_cursos||[]).map((c,i)=>`<span class="det-chip" style="background:var(--bm);color:#fff;border-color:var(--bm)">${i+1}. ${c}</span>`).join('') || '—'}
+    </div>
+    ${d.zap?`<div class="det-sec"><div class="det-sec-ttl">📱 WhatsApp</div><span class="det-chip">${d.zap}</span></div>`:''}
+  `;
+  document.getElementById('det-overlay').classList.add('on');
+}
+function fecharDet(){document.getElementById('det-overlay').classList.remove('on');}
+
+/* ── SEGMENTADO POR CURSO ── */
+function renderCursoSeg(){
+  const curso=document.getElementById('filtro-curso-seg')?.value||'';
+  const el=document.getElementById('curso-seg-content');
+  if(!curso){el.innerHTML='<div class="empty">Selecione um curso acima para ver o relatório segmentado.</div>';return;}
+  const lista=todos.filter(d=>(d.top3_cursos||[]).includes(curso));
+  if(!lista.length){el.innerHTML='<div class="empty">Nenhum resultado para este curso.</div>';return;}
+
+  const idades=lista.map(d=>Number(d.idade)).filter(n=>n>0);
+  const idMed=idades.length?(idades.reduce((a,b)=>a+b,0)/idades.length).toFixed(1):'—';
+  const serieCont={};lista.forEach(d=>{if(d.serie)serieCont[d.serie]=(serieCont[d.serie]||0)+1;});
+  const serieTop=Object.entries(serieCont).sort((a,b)=>b[1]-a[1]);
+  const escolasCont={};lista.forEach(d=>{if(d.escola)escolasCont[d.escola]=(escolasCont[d.escola]||0)+1;});
+  const escolasTop=Object.entries(escolasCont).sort((a,b)=>b[1]-a[1]).slice(0,6);
+
+  el.innerHTML=`
+    <div class="stats-grid" style="margin-bottom:16px">
+      <div class="stat-card"><div class="stat-num">${lista.length}</div><div class="stat-lbl">Indicações</div></div>
+      <div class="stat-card"><div class="stat-num">${idMed}</div><div class="stat-lbl">Idade média</div></div>
+      <div class="stat-card"><div class="stat-num">${serieTop[0]?.[0]||'—'}</div><div class="stat-lbl">Série + frequente</div></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl">🔬 Perfil Holland médio — ${curso}</div>
+      <div id="holland-curso"></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl">📚 Por série</div>
+      ${serieTop.map(([s,n])=>`<div class="rank-item"><div class="rank-label">${s}</div>
+        <div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(n/lista.length*100)}%;background:var(--bm)"></div></div>
+        <div class="rank-pct">${n}</div></div>`).join('')}
+    </div>
+    ${escolasTop.length?`<div class="card">
+      <div class="card-ttl">🏫 Escolas / cidades</div>
+      ${escolasTop.map(([e,n])=>`<div class="rank-item"><div class="rank-label">${e}</div>
+        <div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(n/lista.length*100)}%;background:var(--a3)"></div></div>
+        <div class="rank-pct">${n}</div></div>`).join('')}
+    </div>`:''}
+    <div class="card">
+      <div class="card-ttl">👤 Candidatos (${lista.length})</div>
+      <div style="overflow-x:auto">
+      <table><thead><tr><th>#</th><th>Nome</th><th>Idade</th><th>Série</th><th>Tríade Holland</th><th></th></tr></thead>
+      <tbody>${lista.map((d,i)=>{
+        const htop=Object.entries(d.holland||{}).sort((a,b)=>b[1]-a[1]).slice(0,3);
+        return `<tr><td style="color:var(--tf);font-size:11px">${i+1}</td><td><strong>${d.nome}</strong></td><td>${d.idade||'—'}</td><td>${d.serie||'—'}</td>
+          <td>${htop.map(([k])=>`<span class="hbadge h${k}">${k}</span>`).join('')}</td>
+          <td><button class="btn btn-sec btn-sm" onclick="verDet('${d.id}')">Ver</button></td></tr>`;
+      }).join('')}</tbody></table></div>
+    </div>
+  `;
+  // Renderiza Holland após inserir HTML
+  const tmpEl={innerHTML:''};
+  const med={R:0,I:0,A:0,S:0,E:0,C:0};
+  const n=lista.filter(d=>d.holland&&Object.keys(d.holland).length>0).length||1;
+  lista.forEach(d=>{Object.entries(d.holland||{}).forEach(([k,v])=>{if(med[k]!==undefined)med[k]+=Number(v)||0;});});
+  Object.keys(med).forEach(k=>med[k]=med[k]/n);
+  document.getElementById('holland-curso').innerHTML=Object.entries(med).map(([k,v])=>`
+    <div class="rank-item">
+      <div class="rank-label"><span class="hbadge h${k}">${k} — ${HOLLAND_NOMES[k]}</span></div>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(v/5*100)}%;background:${HOLLAND_CORES[k]}"></div></div>
+      <div class="rank-pct">${v.toFixed(1)}</div>
+    </div>`).join('');
+}
+
+/* ── ABA HOLLAND ── */
+function renderHollandAba(){
+  // Dominância — quem tem cada letra como top 1
+  const dom={R:0,I:0,A:0,S:0,E:0,C:0};
+  todos.forEach(d=>{
+    const top=Object.entries(d.holland||{}).sort((a,b)=>b[1]-a[1])[0];
+    if(top) dom[top[0]]=(dom[top[0]]||0)+1;
+  });
+  const domSorted=Object.entries(dom).sort((a,b)=>b[1]-a[1]);
+  const maxD=domSorted[0]?.[1]||1;
+  document.getElementById('holland-dist').innerHTML=`
+    <div style="margin-bottom:6px;font-size:12px;color:var(--ts)">Letra Holland dominante (maior pontuação) de cada respondente</div>
+    ${domSorted.map(([k,n])=>`
+      <div class="rank-item">
+        <div class="rank-label"><span class="hbadge h${k}">${k} — ${HOLLAND_NOMES[k]}</span></div>
+        <div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(n/maxD*100)}%;background:${HOLLAND_CORES[k]}"></div></div>
+        <div class="rank-pct">${n} <span style="font-size:10px;color:var(--tf)">(${todos.length?Math.round(n/todos.length*100):0}%)</span></div>
+      </div>`).join('')}
+  `;
+  renderHollandMedia('holland-radar', todos);
+}
+</script>
+</body>
+</html>
