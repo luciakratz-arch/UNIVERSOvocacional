@@ -385,26 +385,50 @@ input,select,textarea{font-family:var(--ff2);font-size:16px}
 
 </main>
 
-<!-- FIREBASE REST -->
+<!-- GRAVAÇÃO DOS RESULTADOS (Firebase, via REST) -->
 <script>
-window._save = async (data) => {
-  try {
-    const pid = 'anamnese-dralucia', key = 'AIzaSyBaJDEuOub7IBDVQMakk2rmyG6e8xRhP2E';
-    const url = `https://firestore.googleapis.com/v1/projects/${pid}/databases/(default)/documents/universo-vocacional?key=${key}`;
-    const tv = v => {
-      if(v===null||v===undefined) return {nullValue:null};
-      if(typeof v==='boolean') return {booleanValue:v};
-      if(typeof v==='number') return {doubleValue:v};
-      if(Array.isArray(v)) return {arrayValue:{values:v.map(tv)}};
-      if(typeof v==='object'){const f={};Object.entries(v).forEach(([k,x])=>f[k]=tv(x));return {mapValue:{fields:f}}}
-      return {stringValue:String(v)};
-    };
-    const fields={};
-    const doc={origem:'universo-vocacional',projeto:'Teste Vocacional UNIVERSO',instituicao:'Centro Universitário UNIVERSO Goiânia',curso_coordenacao:'Administração',...data};
-    Object.entries(doc).forEach(([k,v])=>fields[k]=tv(v));
-    await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields})});
-  } catch(e){console.warn('FS',e)}
-};
+(function () {
+  const PID = 'entrevista-inicial', KEY = 'AIzaSyDnrgaY8R0Zetkr18uHQJAZXIUa4EwDnv4', COL = 'universo_vocacional';
+  const URL = `https://firestore.googleapis.com/v1/projects/${PID}/databases/(default)/documents/${COL}?key=${KEY}`;
+  const SESSAO = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2);
+  const FILA = 'voc_universo_pendentes';
+  const tv = v => {
+    if (v === null || v === undefined) return { nullValue: null };
+    if (typeof v === 'boolean') return { booleanValue: v };
+    if (typeof v === 'number') return Number.isFinite(v) ? { doubleValue: v } : { nullValue: null };
+    if (Array.isArray(v)) return { arrayValue: { values: v.map(tv) } };
+    if (typeof v === 'object') { const f = {}; Object.entries(v).forEach(([k, x]) => f[k] = tv(x)); return { mapValue: { fields: f } }; }
+    return { stringValue: String(v) };
+  };
+  async function enviar(fields) {
+    for (let t = 1; t <= 3; t++) {
+      try {
+        const r = await fetch(URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields }) });
+        if (r.ok) return true;
+        if (r.status >= 400 && r.status < 500 && r.status !== 429) break;   // erro que repetir não resolve
+      } catch (e) { /* sem internet: tenta de novo */ }
+      await new Promise(ok => setTimeout(ok, 700 * t));
+    }
+    return false;
+  }
+  const pendentes = () => { try { return JSON.parse(localStorage.getItem(FILA) || '[]'); } catch (e) { return []; } };
+  const gravarFila = l => { try { localStorage.setItem(FILA, JSON.stringify(l.slice(-20))); } catch (e) {} };
+  // etapa: 'cadastro' (quando a pessoa preenche os dados) e 'resultado' (quando conclui o teste)
+  window._save = async (data, etapa) => {
+    const doc = Object.assign({ origem: 'universo-vocacional', projeto: 'Teste Vocacional UNIVERSO', instituicao: 'Centro Universitário UNIVERSO Goiânia',
+      curso_coordenacao: 'Administração', sessao: SESSAO, etapa: etapa || 'resultado', dataHoraLocal: new Date().toISOString() }, data);
+    const fields = {}; Object.entries(doc).forEach(([k, v]) => fields[k] = tv(v));
+    const ok = await enviar(fields);
+    if (!ok) { const l = pendentes(); l.push(fields); gravarFila(l); }
+    return ok;
+  };
+  // se uma gravação ficou pendente (internet caiu), reenvia quando a pessoa abre o teste de novo
+  window.addEventListener('load', async () => {
+    const l = pendentes(); if (!l.length) return;
+    const sobra = []; for (const f of l) { if (!(await enviar(f))) sobra.push(f); }
+    gravarFila(sobra);
+  });
+})();
 </script>
 
 <script>
@@ -545,6 +569,7 @@ function valStep2(){
   ST.nome=n; ST.idade=Number(a); ST.serie=s;
   ST.escola=document.getElementById('escola').value.trim();
   ST.zap=z;
+  window._save({nome:ST.nome, idade:ST.idade, serie:ST.serie, escola:ST.escola, zap:ST.zap, lgpd_autorizado:true}, 'cadastro');
   go(3);
 }
 
@@ -734,6 +759,101 @@ function calcularTudo(){
 /* ══════════════════════════════════════════════
    GERAR LAUDO
 ══════════════════════════════════════════════ */
+
+/* ══════════════════════════════════════════════
+   TEXTO PERSONALIZADO (sem IA externa): monta o laudo a partir das notas de cada pessoa
+══════════════════════════════════════════════ */
+const HOL_NOME = {R:'Realista',I:'Investigativo',A:'Artístico',S:'Social',E:'Empreendedor',C:'Convencional'};
+const HOL_DESC = {
+  R:'prefere o que é prático e concreto: gosta de ver resultado de verdade, de mexer com as mãos, com a natureza, com máquinas ou com movimento',
+  I:'tem curiosidade natural: gosta de entender como as coisas funcionam, investigar, analisar e resolver problemas com lógica',
+  A:'precisa de liberdade para criar: se expressa por ideias, imagens, palavras ou estética e não combina com rotina engessada',
+  S:'se realiza ajudando e convivendo com pessoas: ensinar, cuidar, ouvir e fazer diferença na vida dos outros dá sentido ao que faz',
+  E:'gosta de liderar e fazer acontecer: tem iniciativa, influencia as pessoas e se anima com metas, desafios e negócios',
+  C:'valoriza organização, método e precisão: se sente bem quando as coisas têm ordem, regras claras e resultados confiáveis'
+};
+const HOL_AMB = {
+  R:'têm tarefas práticas, contato com a natureza, equipamentos ou atividade física',
+  I:'permitem pesquisar, analisar dados e resolver problemas complexos',
+  A:'dão espaço para criar, propor ideias novas e se expressar',
+  S:'envolvem cuidar, orientar, ensinar e trabalhar em contato direto com pessoas',
+  E:'têm liderança, metas, negociação e chance de empreender',
+  C:'são organizados, com processos claros e responsabilidade sobre números, prazos e qualidade'
+};
+const ANC_NOME = {aut:'autonomia',seg:'segurança e estabilidade',emp:'empreendedorismo',imp:'impacto social',tec:'domínio técnico',ldr:'liderança',estilo:'equilíbrio e estilo de vida'};
+const ANC_DESC = {
+  aut:'você quer ter liberdade para decidir como e quando trabalhar',
+  seg:'você valoriza um caminho previsível, com estabilidade e bons ganhos',
+  emp:'você sonha em criar algo seu e construir o próprio caminho',
+  imp:'você quer que o seu trabalho melhore a vida das pessoas',
+  tec:'você gosta de ser muito bom no que faz e de se aprofundar tecnicamente',
+  ldr:'você se vê coordenando equipes e tomando decisões importantes',
+  estilo:'você busca uma carreira que combine com o seu modo de viver e te dê qualidade de vida'
+};
+function _nivelBF(v){ return v>=3.7 ? 'alto' : v<=2.6 ? 'baixo' : 'medio'; }
+function _motivos(pesos, H, BF, Anch){
+  // dimensões em que a pessoa é forte E que pesam neste curso/área
+  const itens = [];
+  ['R','I','A','S','E','C'].forEach(k=>{ const w=pesos[k]||0; if(w>=3 && H[k]>=3.3) itens.push({txt:`pelo seu lado ${HOL_NOME[k].toLowerCase()}`, v:w*H[k]}); });
+  ['aut','seg','emp','imp','tec','ldr','estilo'].forEach(k=>{ const w=pesos['V_'+k]||0; if(w>=3 && (Anch[k]||0)>=3.3) itens.push({txt:`pela âncora de ${ANC_NOME[k]}`, v:w*(Anch[k]||0)}); });
+  if((pesos.CO||0)>=4 && BF.CO>=3.6) itens.push({txt:'pela sua organização e disciplina', v:pesos.CO*BF.CO});
+  if((pesos.O||0)>=4 && BF.O>=3.6) itens.push({txt:'pela sua abertura para o novo', v:pesos.O*BF.O});
+  if((pesos.EX||0)>=4 && BF.EX>=3.6) itens.push({txt:'pela sua energia no contato com as pessoas', v:pesos.EX*BF.EX});
+  itens.sort((a,b)=>b.v-a.v);
+  return itens.slice(0,2).map(i=>i.txt);
+}
+function _lista(a){ return a.length<=1 ? (a[0]||'') : a.slice(0,-1).join(', ')+' e '+a[a.length-1]; }
+function _soma(a){ return a.join(' e '); }
+
+function laudoPersonalizado({H, BF, Anch, top3Areas, top3Cursos}){
+  const nome = ST.nome.split(' ')[0];
+  const hs = Object.entries(H).sort((a,b)=>b[1]-a[1]);
+  const [h1,h2,h3] = hs.map(x=>x[0]);
+  const ancs = Object.entries(Anch).sort((a,b)=>b[1]-a[1]);
+  const [a1,a2] = ancs.map(x=>x[0]);
+
+  // 1) interesses
+  const p1 = `${nome}, o seu perfil de interesses tem como tríade o ${HOL_NOME[h1]}, o ${HOL_NOME[h2]} e o ${HOL_NOME[h3]}. Isso quer dizer que você ${HOL_DESC[h1]}. Em seguida vem o seu lado ${HOL_NOME[h2].toLowerCase()}, com o qual você também ${HOL_DESC[h2].replace(/^(prefere|tem|precisa|se realiza|gosta|valoriza) /,(m,v)=>({'prefere':'prefere','tem':'tem','precisa':'precisa','se realiza':'se realiza','gosta':'gosta','valoriza':'valoriza'}[v])+' ')}.`;
+
+  // 2) personalidade e valores
+  const tr = [];
+  const o=_nivelBF(BF.O), c=_nivelBF(BF.CO), e=_nivelBF(BF.EX);
+  if(o==='alto') tr.push('curiosidade e abertura para o novo'); else if(o==='baixo') tr.push('preferência por caminhos testados e seguros');
+  if(c==='alto') tr.push('organização e disciplina com o que assume'); else if(c==='baixo') tr.push('um jeito flexível e espontâneo de trabalhar');
+  if(e==='alto') tr.push('energia no contato com as pessoas'); else if(e==='baixo') tr.push('gosto por concentração e por momentos mais reservados');
+  const pers = tr.length ? `Entre os traços de personalidade, aparecem ${_lista(tr)}.` : 'Entre os traços de personalidade, você mostra equilíbrio: sabe se adaptar a situações diferentes.';
+  const p2 = `${pers} As suas âncoras de carreira mais fortes são ${ANC_NOME[a1]} e ${ANC_NOME[a2]}: ${ANC_DESC[a1]}, e ${ANC_DESC[a2]}.`;
+
+  // 3) o que isso significa na prática
+  const p3 = `Na prática, você tende a se dar melhor em ambientes que ${HOL_AMB[h1]}, e também em ambientes que ${HOL_AMB[h2]}. Abaixo estão as grandes áreas onde esse conjunto de interesses e valores mais se encaixa; os cursos da UNIVERSO foram escolhidos dentro dessas áreas.`;
+
+  let out = `---ANALISE---\n${p1}\n\n${p2}\n\n${p3}\n---FIM_ANALISE---\n\n`;
+
+  top3Areas.forEach((a,i)=>{
+    const m = _motivos(a.pesos, H, BF, Anch);
+    const match = m.length
+      ? `Esta área combina com você ${_soma(m)}.`
+      : `Esta área se encaixa no conjunto dos seus interesses e valores.`;
+    out += `---AREA${i+1}---\nNOME: ${a.nome}\nMATCH: ${match}\nDESC: ${a.desc}\n---FIM_AREA${i+1}---\n\n`;
+  });
+
+  top3Cursos.forEach((t,i)=>{
+    const prof = COURSE_PROFILE[t.k]||{};
+    const curso = CURSOS[t.k]; if(!curso) return;
+    const m = _motivos(prof, H, BF, Anch);
+    let match = m.length
+      ? `Este curso conversa com o seu perfil ${_soma(m)}: são qualidades muito valorizadas em ${curso.nome}.`
+      : `${curso.nome} está entre os cursos que mais se aproximam do seu conjunto de interesses e valores.`;
+    if(prof.isAdm) match += ' A Administração da UNIVERSO é referência em gestão e empreendedorismo, com coordenação formada por profissionais de atuação prática no mercado.';
+    out += `---CURSO${i+1}---\nCURSO: ${curso.nome}\nMATCH: ${match}\n---FIM_CURSO${i+1}---\n\n`;
+  });
+
+  const topArea = top3Areas[0].nome, topCurso = CURSOS[top3Cursos[0].k]?.nome || '';
+  const msg = `${nome}, o seu resultado mostra uma vocação clara para ${topArea}, com o lado ${HOL_NOME[h1].toLowerCase()} e a âncora de ${ANC_NOME[a1]} como pontos fortes. ${topCurso ? `O curso de ${topCurso} é um ótimo ponto de partida. ` : ''}Venha conhecer a UNIVERSO Goiânia e conversar com quem pode te ajudar a transformar esse perfil em carreira.`;
+  out += `---MENSAGEM---\n${msg}\n---FIM_MENSAGEM---\n`;
+  return out;
+}
+
 async function gerarLaudo(){
   ST.extras = document.getElementById('extras').value.trim();
   const {H, BF, Anch, areaSorted, cursoSorted} = calcularTudo();
@@ -743,12 +863,17 @@ async function gerarLaudo(){
   const top3Cursos = cursoSorted.slice(0,3).map(([k,v])=>({k,v}));
   const maxCursoScore = top3Cursos[0].v;
 
-  window._save({
-    nome:ST.nome, idade:ST.idade, serie:ST.serie, escola:ST.escola, zap:ST.zap, extras:ST.extras,
+  const salvouP = window._save({
+    nome:ST.nome, idade:ST.idade, serie:ST.serie, escola:ST.escola, zap:ST.zap, extras:ST.extras, lgpd_autorizado:true,
     holland: Object.fromEntries(Object.entries(H).map(([k,v])=>[k,Math.round(v*10)/10])),
+    big5: Object.fromEntries(Object.entries(BF).map(([k,v])=>[k,Math.round(v*10)/10])),
+    ancoras: Anch,
+    respostas: ST.scores,
     top3_areas: top3Areas.map(a=>a.nome),
+    top3_areas_pct: top3Areas.map(a=>Math.round(a.score)),
     top3_cursos_universo: top3Cursos.map(t=>CURSOS[t.k]?.nome||t.k),
-  });
+    top3_cursos_pct: top3Cursos.map(t=>Math.round(t.v)),
+  }, 'resultado');
 
   go(7);
   const el = document.getElementById('s7');
@@ -834,16 +959,14 @@ CARREIRA3: [opção]
 REGRA: Se Administração for um dos 3 cursos da UNIVERSO, destaque que é referência em gestão e empreendedorismo da UNIVERSO, coordenado por profissionais experientes com atuação prática no mercado.`;
 
   let aiText = null;
-  try {
-    const samp = await claude?.use?.('sample');
-    if (!samp) throw new Error('no-ai');
-    let full = '';
-    const stb = document.getElementById('stb');
-    await samp(prompt, { onText:({text})=>{full=text; if(stb) stb.textContent=text.slice(-400);} });
-    aiText = full;
-  } catch(e){}
-
+  try { aiText = laudoPersonalizado({H, BF, Anch, top3Areas, top3Cursos}); } catch(e){ console.warn('texto personalizado', e); }
   renderLaudo(top3Areas, maxAreaScore, top3Cursos, maxCursoScore, H, aiText);
+  salvouP.then(ok=>{
+    const n=document.createElement('p');
+    n.style.cssText='text-align:center;font-size:12px;color:#8a8a8a;margin:14px 8px';
+    n.textContent = ok ? 'Seus dados e seu resultado foram salvos com segurança.' : 'Não conseguimos salvar agora. Vamos tentar de novo automaticamente quando você abrir este link com internet.';
+    document.getElementById('s7').appendChild(n);
+  });
 }
 
 function sec(txt,tag){const m=txt?.match(new RegExp(`---${tag}---([\\s\\S]*?)---FIM_${tag}---`));return m?m[1].trim():''}

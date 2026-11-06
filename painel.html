@@ -252,10 +252,9 @@ tr:hover td{background:var(--sur2)}
 <div class="toast-el" id="toast-el"></div>
 
 <script>
-const SENHA = 'universo2026';
-const PID = 'anamnese-dralucia';
-const KEY = 'AIzaSyBaJDEuOub7IBDVQMakk2rmyG6e8xRhP2E';
-const COL = 'universo-vocacional';
+// A senha é conferida no servidor (não fica mais escrita nesta página) e os dados vêm de lá.
+const FUNCAO = 'https://southamerica-east1-entrevista-inicial.cloudfunctions.net/vocacionalResultados';
+let senhaDigitada = '';
 
 const HOLLAND_NOMES = {R:'Realista',I:'Investigativo',A:'Artístico',S:'Social',E:'Empreendedor',C:'Convencional'};
 const HOLLAND_CORES = {R:'#E67E22',I:'#2980B9',A:'#8E44AD',S:'#27AE60',E:'#C0392B',C:'#D4AC0D'};
@@ -263,17 +262,29 @@ const HOLLAND_CORES = {R:'#E67E22',I:'#2980B9',A:'#8E44AD',S:'#27AE60',E:'#C0392
 let todos = [];
 let abaAtual = 'geral';
 
-function entrar(){
-  const s = document.getElementById('senha-inp').value;
-  if(s === SENHA){
+async function entrar(){
+  const inp = document.getElementById('senha-inp');
+  const s = inp.value;
+  const erro = document.getElementById('login-erro');
+  erro.style.display = 'none';
+  if(!s){ return; }
+  const btn = document.querySelector('#area-login .btn-pri'); const rot = btn.textContent; btn.textContent = 'Verificando...'; btn.disabled = true;
+  try{
+    const r = await fetch(FUNCAO, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ data:{ senha: s } }) });
+    const d = await r.json();
+    if(!r.ok || !d.result){
+      erro.textContent = (d.error && d.error.status === 'RESOURCE_EXHAUSTED') ? 'Muitas tentativas. Tente mais tarde.' : 'Senha incorreta. Tente novamente.';
+      erro.style.display = 'block'; inp.value=''; inp.focus();
+      btn.textContent = rot; btn.disabled = false; return;
+    }
+    senhaDigitada = s;
     document.getElementById('area-login').style.display='none';
     document.getElementById('area-painel').style.display='block';
-    carregarDados();
-  } else {
-    document.getElementById('login-erro').style.display='block';
-    document.getElementById('senha-inp').value='';
-    document.getElementById('senha-inp').focus();
+    usarDados(d.result.itens || []);
+  }catch(e){
+    erro.textContent = 'Não foi possível conectar. Verifique a internet e tente de novo.'; erro.style.display = 'block';
   }
+  btn.textContent = rot; btn.disabled = false;
 }
 
 function aba(nome){
@@ -296,56 +307,29 @@ function toast(msg){
 /* ── CARREGAR FIRESTORE ── */
 async function carregarDados(){
   try{
-    let docs=[], nextPage=null;
-    do{
-      const u=`https://firestore.googleapis.com/v1/projects/${PID}/databases/(default)/documents/${COL}?key=${KEY}&pageSize=300${nextPage?'&pageToken='+nextPage:''}`;
-      const r=await fetch(u);
-      const d=await r.json();
-      if(d.documents) docs=[...docs,...d.documents];
-      nextPage=d.nextPageToken||null;
-    }while(nextPage);
-
-    todos=docs.map(doc=>{
-      const f=doc.fields||{};
-      const get=(k)=>{
-        const v=f[k];
-        if(!v) return '';
-        if(v.stringValue!==undefined) return v.stringValue;
-        if(v.doubleValue!==undefined) return v.doubleValue;
-        if(v.integerValue!==undefined) return Number(v.integerValue);
-        if(v.booleanValue!==undefined) return v.booleanValue;
-        if(v.nullValue!==undefined) return null;
-        if(v.arrayValue){return (v.arrayValue.values||[]).map(x=>x.stringValue||x.doubleValue||'');}
-        if(v.mapValue){
-          const obj={};
-          Object.entries(v.mapValue.fields||{}).forEach(([k2,v2])=>{
-            obj[k2]=v2.doubleValue!==undefined?v2.doubleValue:(v2.stringValue||'');
-          });
-          return obj;
-        }
-        return '';
-      };
-      return {
-        id: doc.name.split('/').pop(),
-        nome: get('nome'),
-        idade: get('idade'),
-        serie: get('serie'),
-        escola: get('escola'),
-        zap: get('zap'),
-        holland: get('holland')||{},
-        top3_areas: get('top3_areas')||[],
-        top3_cursos: get('top3_cursos_universo')||[],
-        ts: doc.createTime||'',
-      };
-    }).filter(d=>d.nome && d.nome !== 'teste');
-
-    document.getElementById('badge-total').textContent = todos.length + ' respostas';
-    renderGeral();
-    preencherFiltros();
+    const r = await fetch(FUNCAO, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ data:{ senha: senhaDigitada } }) });
+    const d = await r.json();
+    if(!r.ok || !d.result) throw new Error('falha');
+    usarDados(d.result.itens || []);
   }catch(e){
     document.getElementById('stats-grid').innerHTML='<div class="empty">❌ Erro ao carregar dados. Verifique a conexão.</div>';
     console.error(e);
   }
+}
+
+function usarDados(itens){
+  const nomeOk = d => d.nome && d.nome !== 'teste';
+  // só conta como teste feito quem chegou ao resultado (registros antigos não têm "etapa")
+  const concluidos = itens.filter(d => nomeOk(d) && (d.etapa === 'resultado' || !d.etapa));
+  const iniciaram = new Set(itens.filter(d => nomeOk(d) && d.etapa === 'cadastro').map(d => d.sessao));
+  concluidos.forEach(d => { if(d.sessao) iniciaram.delete(d.sessao); });
+  todos = concluidos.map(d => ({
+    id: d.id, nome: d.nome, idade: d.idade, serie: d.serie, escola: d.escola, zap: d.zap,
+    holland: d.holland || {}, top3_areas: d.top3_areas || [], top3_cursos: d.top3_cursos_universo || [], ts: d.ts || '',
+  }));
+  document.getElementById('badge-total').textContent = todos.length + ' respostas' + (iniciaram.size ? ' · ' + iniciaram.size + ' iniciaram e não concluíram' : '');
+  renderGeral();
+  preencherFiltros();
 }
 
 /* ── VISÃO GERAL ── */
