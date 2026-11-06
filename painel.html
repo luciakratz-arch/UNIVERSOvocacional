@@ -141,14 +141,16 @@ tr:hover td{background:var(--sur2)}
 <!-- LOGIN -->
 <div id="area-login">
   <div class="login-wrap">
-    <div class="login-card">
+    <form class="login-card" id="form-login" onsubmit="entrar();return false">
       <div class="login-icon">🔐</div>
       <div class="login-titulo">Acesso Restrito</div>
       <div class="login-sub">Painel exclusivo para coordenadores da UNIVERSO</div>
-      <input class="inp" id="senha-inp" type="password" placeholder="Senha de acesso" style="text-align:center;letter-spacing:3px;font-size:18px;margin-bottom:12px" onkeydown="if(event.key==='Enter')entrar()">
-      <button class="btn btn-pri" style="width:100%;justify-content:center;min-height:48px" onclick="entrar()">🔓 Entrar</button>
+      <input type="text" name="usuario" autocomplete="username" value="painel-universo" style="display:none" tabindex="-1" aria-hidden="true">
+      <input class="inp" id="senha-inp" name="senha" autocomplete="current-password" type="password" placeholder="Senha de acesso" style="text-align:center;letter-spacing:3px;font-size:18px;margin-bottom:12px" onkeydown="if(event.key==='Enter')entrar()">
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ts);margin:0 0 12px;cursor:pointer"><input type="checkbox" id="lembrar" checked> Lembrar a senha neste aparelho</label>
+      <button class="btn btn-pri" type="submit" style="width:100%;justify-content:center;min-height:48px">🔓 Entrar</button>
       <div class="login-erro" id="login-erro">Senha incorreta. Tente novamente.</div>
-    </div>
+    </form>
   </div>
 </div>
 
@@ -159,6 +161,7 @@ tr:hover td{background:var(--sur2)}
     <button class="nav-btn" onclick="aba('individual')" id="tab-individual">👤 Individual</button>
     <button class="nav-btn" onclick="aba('cursos')" id="tab-cursos">🏫 Por Curso</button>
     <button class="nav-btn" onclick="aba('holland')" id="tab-holland">🔬 Holland</button>
+    <button class="nav-btn" onclick="sairDoAparelho()" style="margin-left:auto" title="Esquece a senha salva neste aparelho">🚪 Sair</button>
   </nav>
 
   <div class="main">
@@ -264,6 +267,8 @@ tr:hover td{background:var(--sur2)}
 // A senha é conferida no servidor (não fica mais escrita nesta página) e os dados vêm de lá.
 const FUNCAO = 'https://southamerica-east1-entrevista-inicial.cloudfunctions.net/vocacionalResultados';
 let senhaDigitada = '';
+function sairDoAparelho(){ try{ localStorage.removeItem('voc_painel_senha'); }catch(e){} location.reload(); }
+window.addEventListener('load', ()=>{ let sv=''; try{ sv=localStorage.getItem('voc_painel_senha')||''; }catch(e){} if(sv) entrar(sv); });
 
 const HOLLAND_NOMES = {R:'Realista',I:'Investigativo',A:'Artístico',S:'Social',E:'Empreendedor',C:'Convencional'};
 const HOLLAND_CORES = {R:'#E67E22',I:'#2980B9',A:'#8E44AD',S:'#27AE60',E:'#C0392B',C:'#D4AC0D'};
@@ -271,9 +276,9 @@ const HOLLAND_CORES = {R:'#E67E22',I:'#2980B9',A:'#8E44AD',S:'#27AE60',E:'#C0392
 let todos = [];
 let abaAtual = 'geral';
 
-async function entrar(){
+async function entrar(senhaSalva){
   const inp = document.getElementById('senha-inp');
-  const s = inp.value;
+  const s = (typeof senhaSalva === 'string' ? senhaSalva : '') || inp.value;
   const erro = document.getElementById('login-erro');
   erro.style.display = 'none';
   if(!s){ return; }
@@ -282,11 +287,13 @@ async function entrar(){
     const r = await fetch(FUNCAO, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ data:{ senha: s } }) });
     const d = await r.json();
     if(!r.ok || !d.result){
+      try{ localStorage.removeItem('voc_painel_senha'); }catch(e){}
       erro.textContent = (d.error && d.error.status === 'RESOURCE_EXHAUSTED') ? 'Muitas tentativas. Tente mais tarde.' : 'Senha incorreta. Tente novamente.';
       erro.style.display = 'block'; inp.value=''; inp.focus();
       btn.textContent = rot; btn.disabled = false; return;
     }
     senhaDigitada = s;
+    try{ if(document.getElementById('lembrar').checked) localStorage.setItem('voc_painel_senha', s); else localStorage.removeItem('voc_painel_senha'); }catch(e){}
     document.getElementById('area-login').style.display='none';
     document.getElementById('area-painel').style.display='block';
     usarDados(d.result.itens || []);
@@ -481,6 +488,19 @@ function renderTabela(){
   }).join('')||'<tr><td colspan="9" class="empty">Nenhum resultado para os filtros selecionados.</td></tr>';
 }
 
+async function excluirResultado(id){
+  const d = todos.find(x=>x.id===id);
+  if(!confirm('Excluir o resultado de '+(d?d.nome:'esta pessoa')+'? Isso não pode ser desfeito.')) return;
+  try{
+    const r = await fetch(FUNCAO.replace('vocacionalResultados','vocacionalExcluir'), { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ data:{ senha: senhaDigitada, id } }) });
+    if(!r.ok) throw new Error('falha');
+    fecharDet && fecharDet();
+    toast('Resultado excluído');
+    await carregarDados();
+    renderTabela();
+  }catch(e){ alert('Não foi possível excluir agora. Tente de novo.'); }
+}
+
 function verDet(id){
   const d=todos.find(x=>x.id===id);
   if(!d) return;
@@ -492,7 +512,10 @@ function verDet(id){
         <div class="det-nome">${d.nome||'—'}</div>
         <div class="det-meta">${d.idade?d.idade+' anos · ':''} ${d.serie||''} · ${d.escola||''} · ${data}</div>
       </div>
-      <button class="btn btn-sec btn-sm" onclick="fecharDet()">✕ Fechar</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-sec btn-sm" style="color:#C0392B" onclick="excluirResultado('${d.id}')">🗑 Excluir</button>
+        <button class="btn btn-sec btn-sm" onclick="fecharDet()">✕ Fechar</button>
+      </div>
     </div>
     <div class="det-sec">
       <div class="det-sec-ttl">🔬 Perfil Holland RIASEC</div>
