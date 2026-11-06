@@ -126,6 +126,8 @@ tr:hover td{background:var(--sur2)}
 
 .toast-el{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1A2A40;color:#fff;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
 </style>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 </head>
 <body>
 
@@ -145,6 +147,8 @@ tr:hover td{background:var(--sur2)}
       <div class="login-icon">🔐</div>
       <div class="login-titulo">Acesso Restrito</div>
       <div class="login-sub">Painel exclusivo para coordenadores da UNIVERSO</div>
+      <button type="button" class="btn btn-pri" id="btn-google" onclick="entrarGoogle()" style="width:100%;justify-content:center;min-height:48px;margin-bottom:10px">Entrar com a conta Google</button>
+      <div style="text-align:center;font-size:12px;color:var(--tf);margin:2px 0 12px" id="ou-senha">ou use a senha de acesso</div>
       <input type="text" name="usuario" autocomplete="username" value="painel-universo" style="display:none" tabindex="-1" aria-hidden="true">
       <input class="inp" id="senha-inp" name="senha" autocomplete="current-password" type="password" placeholder="Senha de acesso" style="text-align:center;letter-spacing:3px;font-size:18px;margin-bottom:12px" onkeydown="if(event.key==='Enter')entrar()">
       <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ts);margin:0 0 12px;cursor:pointer"><input type="checkbox" id="lembrar" checked> Lembrar a senha neste aparelho</label>
@@ -161,7 +165,8 @@ tr:hover td{background:var(--sur2)}
     <button class="nav-btn" onclick="aba('individual')" id="tab-individual">👤 Individual</button>
     <button class="nav-btn" onclick="aba('cursos')" id="tab-cursos">🏫 Por Curso</button>
     <button class="nav-btn" onclick="aba('holland')" id="tab-holland">🔬 Holland</button>
-    <button class="nav-btn" onclick="sairDoAparelho()" style="margin-left:auto" title="Esquece a senha salva neste aparelho">🚪 Sair</button>
+    <button class="nav-btn" onclick="aba('acesso')" id="tab-acesso" style="display:none">👥 Acesso</button>
+    <button class="nav-btn" onclick="sairDoAparelho()" style="margin-left:auto" title="Sai e esquece a senha salva neste aparelho">🚪 Sair</button>
   </nav>
 
   <div class="main">
@@ -242,6 +247,22 @@ tr:hover td{background:var(--sur2)}
     </div>
 
     <!-- ABA HOLLAND -->
+    <div id="aba-acesso" style="display:none">
+      <div class="card" style="padding:18px;max-width:640px">
+        <div style="font-weight:700;font-size:15px;margin-bottom:6px">Quem pode entrar neste painel</div>
+        <p style="font-size:13px;color:var(--ts);margin:0 0 12px">Cada coordenador entra com a própria conta Google. Digite o e-mail Google dele e clique em Liberar. Para tirar o acesso, clique em Remover.</p>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <input class="inp" id="novo-coord" type="email" placeholder="e-mail do coordenador" style="flex:1;min-width:220px">
+          <button class="btn btn-pri" onclick="acessoAdicionar()">Liberar</button>
+        </div>
+        <div id="lista-coord"></div>
+        <div style="border-top:1px solid var(--bor);margin-top:14px;padding-top:14px">
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer"><input type="checkbox" id="chk-senha" onchange="acessoSenha(this.checked)"> Aceitar também a senha antiga de acesso</label>
+          <div style="font-size:12px;color:var(--tf);margin-top:4px">Desmarque quando todos os coordenadores já estiverem entrando com a conta Google.</div>
+        </div>
+      </div>
+    </div>
+
     <div id="aba-holland" style="display:none">
       <div class="card">
         <div class="card-ttl">🔬 Distribuição Holland — todas as respostas</div>
@@ -267,8 +288,31 @@ tr:hover td{background:var(--sur2)}
 // A senha é conferida no servidor (não fica mais escrita nesta página) e os dados vêm de lá.
 const FUNCAO = 'https://southamerica-east1-entrevista-inicial.cloudfunctions.net/vocacionalResultados';
 let senhaDigitada = '';
-function sairDoAparelho(){ try{ localStorage.removeItem('voc_painel_senha'); }catch(e){} location.reload(); }
-window.addEventListener('load', ()=>{ let sv=''; try{ sv=localStorage.getItem('voc_painel_senha')||''; }catch(e){} if(sv) entrar(sv); });
+let usuarioGoogle = null;
+let papelAtual = '';
+firebase.initializeApp({ apiKey: 'AIzaSyDnrgaY8R0Zetkr18uHQJAZXIUa4EwDnv4', authDomain: 'entrevista-inicial.firebaseapp.com', projectId: 'entrevista-inicial', appId: '1:437375609844:web:36082771a32d262b2e27a1' });
+const FN_BASE = 'https://southamerica-east1-entrevista-inicial.cloudfunctions.net/';
+// Chamada ao servidor: leva o login Google quando houver; senão a senha digitada.
+async function chamarServidor(nome, dados){
+  const h = { 'Content-Type':'application/json' };
+  const corpo = Object.assign({}, dados || {});
+  if(usuarioGoogle){ h['Authorization'] = 'Bearer ' + await usuarioGoogle.getIdToken(); }
+  else { corpo.senha = senhaDigitada; }
+  const r = await fetch(FN_BASE + nome, { method:'POST', headers:h, body: JSON.stringify({ data: corpo }) });
+  let d = {}; try{ d = await r.json(); }catch(e){}
+  return { ok: r.ok, d };
+}
+function sairDoAparelho(){ try{ localStorage.removeItem('voc_painel_senha'); }catch(e){} try{ firebase.auth().signOut().finally(()=>location.reload()); }catch(e){ location.reload(); } }
+async function entrarGoogle(){
+  const erro = document.getElementById('login-erro'); erro.style.display = 'none';
+  try{
+    const res = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    usuarioGoogle = res.user; await entrar();
+  }catch(e){ if(e && e.code !== 'auth/popup-closed-by-user'){ erro.textContent = 'Não foi possível entrar com o Google. Tente de novo.'; erro.style.display = 'block'; } }
+}
+window.addEventListener('load', ()=>{
+  firebase.auth().onAuthStateChanged(u=>{ if(u && !usuarioGoogle){ usuarioGoogle = u; entrar(); } else if(!u){ let sv=''; try{ sv=localStorage.getItem('voc_painel_senha')||''; }catch(e){} if(sv) entrar(sv); } });
+});
 
 const HOLLAND_NOMES = {R:'Realista',I:'Investigativo',A:'Artístico',S:'Social',E:'Empreendedor',C:'Convencional'};
 const HOLLAND_CORES = {R:'#E67E22',I:'#2980B9',A:'#8E44AD',S:'#27AE60',E:'#C0392B',C:'#D4AC0D'};
@@ -281,19 +325,21 @@ async function entrar(senhaSalva){
   const s = (typeof senhaSalva === 'string' ? senhaSalva : '') || inp.value;
   const erro = document.getElementById('login-erro');
   erro.style.display = 'none';
-  if(!s){ return; }
-  const btn = document.querySelector('#area-login .btn-pri'); const rot = btn.textContent; btn.textContent = 'Verificando...'; btn.disabled = true;
+  if(!s && !usuarioGoogle){ return; }
+  const btn = document.querySelector('#area-login form .btn-pri:last-of-type') || document.getElementById('btn-google'); const rot = btn.textContent; btn.textContent = 'Verificando...'; btn.disabled = true;
   try{
-    const r = await fetch(FUNCAO, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ data:{ senha: s } }) });
-    const d = await r.json();
-    if(!r.ok || !d.result){
+    if(!usuarioGoogle) senhaDigitada = s;
+    const { ok: r, d } = await chamarServidor('vocacionalResultados', {});
+    if(!r || !d.result){
       try{ localStorage.removeItem('voc_painel_senha'); }catch(e){}
-      erro.textContent = (d.error && d.error.status === 'RESOURCE_EXHAUSTED') ? 'Muitas tentativas. Tente mais tarde.' : 'Senha incorreta. Tente novamente.';
-      erro.style.display = 'block'; inp.value=''; inp.focus();
+      const msg = (d.error && d.error.status === 'RESOURCE_EXHAUSTED') ? 'Muitas tentativas. Tente mais tarde.' : (usuarioGoogle && d.error && d.error.message) ? d.error.message : 'Senha incorreta. Tente novamente.';
+      erro.textContent = msg; erro.style.display = 'block'; inp.value=''; if(!usuarioGoogle) inp.focus();
+      if(usuarioGoogle){ try{ await firebase.auth().signOut(); }catch(e){} usuarioGoogle = null; }
       btn.textContent = rot; btn.disabled = false; return;
     }
-    senhaDigitada = s;
-    try{ if(document.getElementById('lembrar').checked) localStorage.setItem('voc_painel_senha', s); else localStorage.removeItem('voc_painel_senha'); }catch(e){}
+    papelAtual = d.result.papel || '';
+    if(papelAtual === 'admin'){ document.getElementById('tab-acesso').style.display = ''; }
+    try{ if(!usuarioGoogle && document.getElementById('lembrar').checked) localStorage.setItem('voc_painel_senha', s); else localStorage.removeItem('voc_painel_senha'); }catch(e){}
     document.getElementById('area-login').style.display='none';
     document.getElementById('area-painel').style.display='block';
     usarDados(d.result.itens || []);
@@ -305,14 +351,31 @@ async function entrar(senhaSalva){
 
 function aba(nome){
   abaAtual = nome;
-  ['geral','individual','cursos','holland'].forEach(a=>{
+  ['geral','individual','cursos','holland','acesso'].forEach(a=>{
     document.getElementById('aba-'+a).style.display = a===nome ? 'block' : 'none';
     document.getElementById('tab-'+a).classList.toggle('on', a===nome);
   });
   if(nome==='individual') renderTabela();
   if(nome==='cursos') renderCursoSeg();
   if(nome==='holland') renderHollandAba();
+  if(nome==='acesso') acessoCarregar();
 }
+
+/* ── ACESSO DOS COORDENADORES (só a administradora) ── */
+function renderAcesso(d){
+  const emails = d.emails || [];
+  document.getElementById('lista-coord').innerHTML = emails.length ? emails.map(e=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bor);font-size:14px"><span>'+escapeHtmlAcesso(e)+'</span><button class="btn" style="padding:4px 12px;font-size:12px" onclick="acessoRemover(\''+escapeHtmlAcesso(e)+'\')">Remover</button></div>').join('') : '<div class="empty" style="padding:14px">Nenhum coordenador liberado ainda.</div>';
+  document.getElementById('chk-senha').checked = d.senhaAtiva !== false;
+}
+function escapeHtmlAcesso(x){ return String(x).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+async function acessoChamar(dados){
+  try{ const { ok, d } = await chamarServidor('vocacionalCoordenadores', dados); if(!ok || !d.result){ toast((d.error&&d.error.message)||'Não foi possível salvar.'); return; } renderAcesso(d.result); }
+  catch(e){ toast('Não foi possível conectar.'); }
+}
+function acessoCarregar(){ acessoChamar({ acao:'listar' }); }
+function acessoAdicionar(){ const i=document.getElementById('novo-coord'); const v=i.value.trim(); if(!v) return; acessoChamar({ acao:'adicionar', email:v }); i.value=''; toast('E-mail liberado'); }
+function acessoRemover(email){ if(!confirm('Tirar o acesso de '+email+'?')) return; acessoChamar({ acao:'remover', email }); }
+function acessoSenha(ativa){ acessoChamar({ acao:'senha', ativa }); toast(ativa?'Senha antiga ligada':'Senha antiga desligada'); }
 
 function toast(msg){
   const el=document.getElementById('toast-el');
@@ -323,9 +386,8 @@ function toast(msg){
 /* ── CARREGAR FIRESTORE ── */
 async function carregarDados(){
   try{
-    const r = await fetch(FUNCAO, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ data:{ senha: senhaDigitada } }) });
-    const d = await r.json();
-    if(!r.ok || !d.result) throw new Error('falha');
+    const { ok: r, d } = await chamarServidor('vocacionalResultados', {});
+    if(!r || !d.result) throw new Error('falha');
     usarDados(d.result.itens || []);
   }catch(e){
     document.getElementById('stats-grid').innerHTML='<div class="empty">❌ Erro ao carregar dados. Verifique a conexão.</div>';
@@ -492,8 +554,8 @@ async function excluirResultado(id){
   const d = todos.find(x=>x.id===id);
   if(!confirm('Excluir o resultado de '+(d?d.nome:'esta pessoa')+'? Isso não pode ser desfeito.')) return;
   try{
-    const r = await fetch(FUNCAO.replace('vocacionalResultados','vocacionalExcluir'), { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ data:{ senha: senhaDigitada, id } }) });
-    if(!r.ok) throw new Error('falha');
+    const { ok: r } = await chamarServidor('vocacionalExcluir', { id });
+    if(!r) throw new Error('falha');
     fecharDet && fecharDet();
     toast('Resultado excluído');
     await carregarDados();
