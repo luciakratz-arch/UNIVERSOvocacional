@@ -173,6 +173,7 @@ tr:hover td{background:var(--sur2)}
 
     <!-- ABA GERAL -->
     <div id="aba-geral">
+      <div id="aviso-funil" style="display:none;border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:14px"></div>
       <div class="stats-grid" id="stats-grid">
         <div class="stat-card"><div class="spin"></div></div>
       </div>
@@ -405,6 +406,14 @@ function usarDados(itens){
     id: d.id, nome: d.nome, idade: d.idade, serie: d.serie, escola: d.escola, zap: d.zap,
     holland: d.holland || {}, top3_areas: d.top3_areas || [], top3_cursos: d.top3_cursos_universo || [], ts: d.ts || '',
   }));
+  (function(){
+    const ini = iniciaram.size + concluidos.filter(d => d.etapa === 'resultado').length;
+    const conc = concluidos.length, falt = iniciaram.size;
+    const el = document.getElementById('aviso-funil');
+    if(el){ el.style.display = ini ? 'block' : 'none';
+      el.style.background = falt ? '#FEF3C7' : '#ECFDF5'; el.style.border = '1px solid ' + (falt ? '#F59E0B' : '#10B981');
+      el.innerHTML = '<strong>Quantos fizeram o teste:</strong> ' + ini + ' começaram · ' + conc + ' concluíram' + (falt ? ' · <strong>' + falt + ' ficaram pelo caminho</strong> (preencheram os dados mas não chegaram ao resultado)' : ''); }
+  })();
   document.getElementById('badge-total').textContent = todos.length + ' respostas' + (iniciaram.size ? ' · ' + iniciaram.size + ' iniciaram e não concluíram' : '');
   renderGeral();
   renderPorDia();

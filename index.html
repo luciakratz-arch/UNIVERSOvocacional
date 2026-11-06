@@ -422,6 +422,13 @@ input,select,textarea{font-family:var(--ff2);font-size:16px}
     if (!ok) { const l = pendentes(); l.push(fields); gravarFila(l); }
     return ok;
   };
+  // Tentar de novo (botão do aviso): reenvia tudo o que ficou pendente neste aparelho
+  window._reenviar = async () => {
+    const l = pendentes(); const sobra = [];
+    for (const f of l) { if (!(await enviar(f))) sobra.push(f); }
+    gravarFila(sobra);
+    return sobra.length === 0;
+  };
   // se uma gravação ficou pendente (internet caiu), reenvia quando a pessoa abre o teste de novo
   window.addEventListener('load', async () => {
     const l = pendentes(); if (!l.length) return;
@@ -964,7 +971,15 @@ REGRA: Se Administração for um dos 3 cursos da UNIVERSO, destaque que é refer
   salvouP.then(ok=>{
     const n=document.createElement('p');
     n.style.cssText='text-align:center;font-size:12px;color:#8a8a8a;margin:14px 8px';
-    n.textContent = ok ? 'Seus dados e seu resultado foram salvos com segurança.' : 'Não conseguimos salvar agora. Vamos tentar de novo automaticamente quando você abrir este link com internet.';
+    n.textContent = ok ? 'Seus dados e seu resultado foram salvos com segurança.' : 'ATENÇÃO: o seu resultado ainda NÃO foi enviado à coordenação. Confira a internet e toque no botão abaixo.';
+    if(!ok){
+      n.style.cssText='text-align:center;font-size:14px;color:#9A3412;background:#FFF7ED;border:1px solid #FB923C;border-radius:12px;padding:12px;margin:14px 8px';
+      const b=document.createElement('button');
+      b.textContent='Tentar enviar de novo';
+      b.style.cssText='display:block;margin:10px auto 0;padding:12px 22px;border:0;border-radius:12px;background:#1B4F8F;color:#fff;font-size:16px;font-weight:700;cursor:pointer';
+      b.onclick=async()=>{ b.disabled=true; b.textContent='Enviando...'; const feito=await window._reenviar(); if(feito){ n.style.cssText='text-align:center;font-size:12px;color:#8a8a8a;margin:14px 8px'; n.textContent='Seus dados e seu resultado foram salvos com segurança.'; } else { b.disabled=false; b.textContent='Não deu. Tentar de novo'; } };
+      n.appendChild(b);
+    }
     document.getElementById('s7').appendChild(n);
   });
 }
